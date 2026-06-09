@@ -58,7 +58,7 @@ class Applyonline_Rest{
         function rest_authentication_errors( $errors ){
             
             if( is_wp_error($errors) ){
-                var_dump($errors); die('Alhamdulillah');                
+                var_dump($errors); die('Hello World');
             }
         }
                 

@@ -556,7 +556,7 @@
                     dd.find('.aol_default_option').attr('selected', 'selected');
                     return;
                 };
-                alert('Alhamdulillah');
+                //alert('Hello World');
                 $.ajax({
                     url: ajaxurl,
                     type: 'POST',

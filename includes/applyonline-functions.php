@@ -596,15 +596,15 @@ function aol_application_data_v2($post, $keys){
     }
     
     $keys_order = $meta['_aol_fields_order'];
-    
-    $data = array();
+
+    $data = [];
     foreach ( $keys_order as $key ):
         if ( substr ( $key, 0, 9 ) == '_aol_app_' ){
 
             $key = sanitize_key($key);
             $val = get_post_meta ( $post->ID, $key, true );
             
-            //If the outputs is a file attachment
+            //check field type.
             switch ($meta[$key]['type']){
                 case 'file':
                     $val = empty($val) ? NULL: aol_crypt($val['file']);
