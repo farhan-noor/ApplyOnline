@@ -4,7 +4,7 @@ Donate link: https://wpreloaded.com/shop/
 Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 2.6.8.1
 Requires PHP: 7.0
 License: GPLv2 or later

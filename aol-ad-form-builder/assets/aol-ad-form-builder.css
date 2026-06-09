@@ -1,0 +1,363 @@
+.aol-ad-fb-v2 .aol-ad-fb-v2-toolbar {
+	margin: 8px 0 12px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.aol-ad-fb-v2-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0 28px;
+}
+
+.aol-ad-fb-v2-table thead th {
+	border-bottom: 1px solid #c3c4c7;
+}
+
+.aol-ad-fb-v2-table .col-order {
+	width: 36px;
+	text-align: center;
+	color: #6b7280;
+}
+
+.aol-ad-fb-v2-table .col-field {
+	position: relative;
+	vertical-align: top;
+	padding-top: 22px;
+}
+
+.aol-ad-fb-v2-table .col-order,
+.aol-ad-fb-v2-table .col-required {
+	vertical-align: top;
+	padding-top: 22px;
+}
+
+.aol-ad-fb-v2-row__panel {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	z-index: 3;
+	width: 100%;
+	max-width: 100%;
+	display: flex;
+	justify-content: center;
+	pointer-events: none;
+	transform: translate(-50%, -50%);
+}
+
+.aol-ad-fb-v2-row__panel-inner {
+	pointer-events: auto;
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 6px 8px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.aol-ad-fb-v2-row__panel-inner .aol-ad-fb-v2-icon-btn {
+	min-width: 30px;
+	height: 30px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
+.aol-ad-fb-v2-row__panel-inner .aol-ad-fb-v2-icon-btn .dashicons {
+	margin: 0;
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.aol-ad-fb-v2-row__panel-inner .aol-ad-fb-v2-add--inline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.aol-ad-fb-v2-table tr.aol-ad-fb-v2-row {
+	cursor: pointer;
+	background: #eee;
+}
+
+.aol-ad-fb-v2-table tr.aol-ad-fb-v2-row:hover {
+	background: #f0f6fc;
+}
+
+.aol-ad-fb-v2-table tr.aol-ad-fb-v2-row:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: -2px;
+}
+
+.aol-ad-fb-v2-preview__meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+.aol-ad-fb-v2-preview__label {
+	font-weight: 700;
+}
+
+.aol-ad-fb-v2-preview__type {
+	font-size: 11px;
+	padding: 2px 6px;
+	border-radius: 999px;
+	background: #eef0f2;
+	color: #2c3338;
+}
+
+
+.aol-ad-fb-v2-preview__input {
+	width: 100%;
+}
+
+.aol-ad-fb-v2-preview__help {
+	margin-top: 6px;
+	color: #646970;
+	font-size: 12px;
+}
+
+.aol-ad-fb-v2-preview__choices {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 4px 12px;
+	max-width: 520px;
+}
+
+.aol-ad-fb-v2-choice {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.aol-ad-fb-v2-paragraph {
+	padding: 10px 12px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	color: #2c3338;
+	max-width: 520px;
+}
+
+.aol-ad-fb-v2-separator {
+	border: 0;
+	border-top: 1px solid #dcdcde;
+	max-width: 520px;
+}
+
+.aol-ad-fb-v2-row__panel,
+.aol-ad-fb-v2-row__panel * {
+	cursor: default;
+}
+
+.aol-ad-fb-v2-row__panel .button {
+	cursor: pointer;
+}
+
+.aol-ad-fb-v2-table tbody tr .dashicons-menu {
+	cursor: grab;
+}
+
+.aol-ad-fb-v2-modal {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.aol-ad-fb-v2-modal__inner {
+	background: #fff;
+	border-radius: 6px;
+	width: min(920px, 100%);
+	max-height: min(90vh, 880px);
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+	overflow: hidden;
+}
+
+.aol-ad-fb-v2-modal__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	border-bottom: 1px solid #e5e7eb;
+	background: #f6f7f7;
+	flex-shrink: 0;
+}
+
+.aol-ad-fb-v2-modal__title {
+	margin: 0;
+	font-size: 14px;
+}
+
+.aol-ad-fb-v2-close {
+	font-size: 18px;
+	text-decoration: none;
+}
+
+.aol-ad-fb-v2-modal__body {
+	padding: 0;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.aol-ad-fb-v2-modal__columns {
+	display: grid;
+	grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+	flex: 1;
+	min-height: 0;
+	align-items: stretch;
+	gap: 0;
+}
+
+.aol-ad-fb-v2-modal__col {
+	min-height: 0;
+	overflow: auto;
+	padding: 16px 20px;
+}
+
+.aol-ad-fb-v2-modal__col--types {
+	border-right: 1px solid #e5e7eb;
+	padding-right: 20px;
+}
+
+.aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-section {
+	margin-bottom: 0;
+}
+
+.aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-type-tabs {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 6px;
+}
+
+.aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-type-tab {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.aol-ad-fb-v2-settings__title {
+	font-weight: 700;
+	margin: 0 0 12px;
+}
+
+.aol-ad-fb-v2-section {
+	margin-bottom: 14px;
+}
+
+.aol-ad-fb-v2-section__title {
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.aol-ad-fb-v2-type-tabs {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 8px;
+}
+
+.aol-ad-fb-v2-type-tab {
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #fff;
+	cursor: pointer;
+	text-align: left;
+	line-height: 1.2;
+}
+
+.aol-ad-fb-v2-type-tab .dashicons {
+	color: #2271b1;
+}
+
+.aol-ad-fb-v2-type-tab__label {
+	font-weight: 600;
+	font-size: 12px;
+}
+
+.aol-ad-fb-v2-type-tab:hover {
+	border-color: #2271b1;
+}
+
+.aol-ad-fb-v2-type-tab.is-active {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+	background: #f0f6fc;
+}
+
+.aol-ad-fb-v2-grid label.aol-ad-fb-v2-span-2 {
+	grid-column: 1 / -1;
+}
+
+.aol-ad-fb-v2-grid label {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.aol-ad-fb-v2-grid label > span {
+	font-weight: 600;
+}
+
+.aol-ad-fb-v2-modal__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	padding: 12px 16px;
+	border-top: 1px solid #e5e7eb;
+	background: #f9fafb;
+	flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+	.aol-ad-fb-v2-modal__columns {
+		grid-template-columns: 1fr;
+		grid-template-rows: minmax(0, 38vh) minmax(0, 1fr);
+	}
+
+	.aol-ad-fb-v2-modal__col {
+		padding: 12px 14px;
+	}
+
+	.aol-ad-fb-v2-modal__col--types {
+		border-right: none;
+		border-bottom: 1px solid #e5e7eb;
+		padding-right: 14px;
+		padding-bottom: 12px;
+	}
+
+	.aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-type-tabs {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.aol-ad-fb-v2-type-tabs {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.aol-ad-fb-v2-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
