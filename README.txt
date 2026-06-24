@@ -32,8 +32,8 @@ Does your organization collect admission forms and also looking for job ads? Loo
 = Powerful Features =
 * Super simple integration, just install & add a menu link to *yourwebsite.com/ads*.
 * Beautifully integrates into your existing website without worrying for design.
-* Create as many ad types as you wish e.g. **Career, Classes, Registrations, Admissions,** etc. 
-* Form builder with all HTML form fields to create a stunning application form.
+* Create as many ad types as you wish e.g. **Career, Classes, Registrations, Admissions, Events** etc. 
+* Form builder with all HTML form fields to create useful & practical application forms.
 * Ads listing with title, thumbnail image, ad summary, taxonomies and **Apply Now** button.
 * Ads filtration option above the ads listing to narrow down desired ads.
 * Ad detail page with description, features and application form.
@@ -112,6 +112,9 @@ Different layout options e.g. grid layout, list layout, sidebar filter, popup fo
 Secure mail with SMTP options.
 Consent or terms & conditions field.
 
+= New Version=
+Fixed: Undefined property: Applyonline_Applications::$version on line 801 in admin\class-applyonline-admin.php 
+
 =2.6.8.2=
 Fixed: Nonce expired generic error message replaced with a more specific error message.
 Fixed: Application form invalid email error formation.
@@ -140,7 +143,7 @@ Fixed: Fatal error on plugin activation.
 
 = 2.6.7.3 =
 New: Filter hook aol_application_success_response.
-Fixed: Application Statuses moved from terms to posts table.
+Fixed: Application Statuses moved from terms to post_status column of posts table.
 Fixed: Actions after plugin update moved to separate class.
 Fixed: PHP warnings on plugin settings page.
 

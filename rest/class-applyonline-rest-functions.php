@@ -188,7 +188,7 @@ class Applyonline_Rest_Functions{
                 $error_html = '<ol class="aol-alert-list"><li>';
                 $error_html .= implode('</li><li>', $error_messages);
                 $error_html .= '</li></ol>';
-                $response = array( 'message' => $error_html );    //generate the error response.
+                $response = array( 'message' => $error_html );
 
                 return new WP_REST_Response( $response, 403 );
             }

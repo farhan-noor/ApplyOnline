@@ -737,6 +737,18 @@ function aol_mail_header($extra_headers = array()){
     return aol_from_mail_header($extra_headers);
 }
 
+/**
+ * aol_mail function.
+ * 
+ * @param type $post_id
+ * @param type $post
+ * @param type $uploads
+ * @return boolean
+ */
+function aol_mail($to, $subject, $message){
+    wp_mail( $to, $subject, nl2br($message), $headers);
+}
+
 function aol_integration(){
     return apply_filters( "aol_integration", array() );
 }
