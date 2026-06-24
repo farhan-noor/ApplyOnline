@@ -416,7 +416,7 @@ class Applyonline_Admin{
                 <div class="nav-tab-wrapper aol-tabs-wrapper">
                     <a class="aol-tab nav-tab active" data-id="shortcodes"><?php echo esc_html_e('Shortcodes', 'apply-online'); ?></a>
                     <a class="aol-tab nav-tab" data-id="expiration"><?php echo esc_html_e('Expiration', 'apply-online'); ?></a>
-                    <a class="aol-tab nav-tab" data-id="recipients"><?php esc_html_e('Email Recipients', 'apply-online'); ?></a>                    
+                    <a class="aol-tab nav-tab" data-id="recipients"><?php esc_html_e('Email Recipients', 'apply-online'); ?></a>
                 </div>
                 <div id="shortcodes" class="aol-tab-data wrap" style="display:block;">
                     <?php do_action('aol_metabox_before', $post); ?>
@@ -430,11 +430,11 @@ class Applyonline_Admin{
                     <p><i><?php esc_html_e('Leave empty to never close this ad.', 'apply-online') ?></i></p>
                     <input type="text" placeholder="<?php esc_attr_e('Date'); ?>" name="_aol_ad_closing_date" class="datepicker <?php echo $closed_class; ?>" value="<?php echo $date; ?>" />
                     <input type="time" placeholder="<?php esc_attr_e('Time in 24hour format', 'apply-online'); ?>" name="_aol_ad_closing_time" class="datetimepicker" value="<?php echo $time; ?>" />
-                    <p><b><?php esc_html_e('Format', 'apply-online'); ?>:</b><i> dd-mm-yyyy</i><br/><b><?php esc_html_e('Example', 'WordPress'); ?>:</b> <i><?php echo current_time('j-m-Y'); ?></i><br/></p>
+                    <p><b><?php esc_html_e('Format', 'apply-online'); ?>:</b><i> dd-mm-yyyy h:m</i><br/><b><?php esc_html_e('Example', 'WordPress'); ?>:</b> <i><?php echo current_time('j-m-Y'); ?> 13:30</i><br/></p>
                     <p class="when-expires"><b><?php esc_html_e('When Expires', 'apply-online'); ?>:</b><br /> <label for="hide_form" style="display: inline-block"><input type="radio" id="hide_form" name="_aol_ad_close_type" value="form" <?php echo $close_form; ?> /><?php esc_html_e('Hide form only', 'apply-online'); ?></label><br />
                     <label for="hide_ad" style="display: inline-block"><input type="radio" id="hide_ad" name="_aol_ad_close_type" value="ad" <?php echo $close_ad; ?> /><?php esc_html_e('Hide form & unlist ad', 'apply-online'); ?></label></p>                
                 </div>
-                <?php do_action('aol_ad_close_before', $post); ?>
+                <?php do_action('aol_ad_list_style', $post); ?>
                 <div id="recipients" class="aol-tab-data wrap">
                     <p class="description"><?php esc_html_e('Leave these fields intact to use global settings for the ad.', 'apply-online'); ?></p>
                     <h3><?php esc_html_e('New application alert recipients', 'apply-online'); ?></h3>
@@ -591,7 +591,9 @@ class Applyonline_Admin{
             add_action( 'pre_get_posts', array($this, 'applications_filter') );
             
             add_filter( 'bulk_actions-edit-aol_application', array($this, 'custom_bulk_actions') );
-            add_filter( 'handle_bulk_actions-edit-aol_application', array($this, 'my_bulk_action_handler'), 10, 3 );
+            
+            //Obselete Since core 2.6.7.3
+            //add_filter( 'handle_bulk_actions-edit-aol_application', array($this, 'my_bulk_action_handler'), 10, 3 );            
         }
 
         /**
@@ -637,6 +639,14 @@ class Applyonline_Admin{
             return $actions;
         }
         
+        /**
+         * Obsolete since 2.6.7.3
+         * 
+         * @param type $redirect_to
+         * @param type $term
+         * @param type $post_ids
+         * @return type
+         */
         function my_bulk_action_handler($redirect_to, $term, $post_ids){
             if( !current_user_can('delete_applications') ) return;
             
@@ -798,7 +808,7 @@ class Applyonline_Admin{
                         <?php /*End of WP official headers*/ ?>
                         <meta name="viewport" content="width=device-width, initial-scale=1">
                         <meta name="robots" content="noindex,nofollow">
-                        <link rel='stylesheet' id='single-style-css'  href='<?php echo plugin_dir_url(__FILE__); ?>css/print.css?ver=<?php echo $this->version; ?>' type='text/css' media='all' />
+                        <link rel='stylesheet' id='single-style-css'  href='<?php echo plugin_dir_url(__FILE__); ?>css/print.css' type='text/css' media='all' />
                     </head>
                 <body class="body wpinv print">
                     <div class="row top-bar no-print">
@@ -1865,7 +1875,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_application_success_alert"><?php esc_html_e('Application submission note', 'apply-online'); ?></label></th>
+                        <th><label for="aol_application_success_alert"><?php esc_html_e('Application submission alert', 'apply-online'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_application_success_alert" cols="50" rows="4" id="aol_application_success_alert"><?php echo sanitize_text_field( get_option_fixed('aol_application_success_alert', $submission_alert ) ); ?></textarea>
                             <p class="description"><?php esc_html_e('Use [id] for dynamic application ID.', 'apply-online'); ?></p>

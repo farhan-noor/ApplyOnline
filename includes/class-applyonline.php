@@ -177,26 +177,26 @@ class Applyonline {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		
-                //Show all statuses.
-                $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'show_all_post_statuses_in_admin' );
-		
-                //Extend WordPress search to include custom fields Join posts and postmeta tables.
-                $this->loader->add_filter('posts_join', $plugin_admin, 'cf_search_join' );
-                $this->loader->add_filter( 'posts_where', $plugin_admin, 'cf_search_where' );
-                $this->loader->add_filter( 'posts_distinct', $plugin_admin, 'cf_search_distinct' );
-                
-                $this->loader->add_action( 'save_post', $plugin_admin, 'save_ad'  );
-                
-                /*Schedule Ad*/
-                $this->loader->add_filter('display_post_states', $plugin_admin, 'add_closed_state', 10, 2);
-                
-                /*Admin Notice*/
-                $this->loader->add_action('admin_notices', $plugin_admin, 'admin_notice');
-                $this->loader->add_action('wp_ajax_aol_dismiss_notice', $plugin_admin, 'admin_dismiss_notice');
-                
-                $this->loader->add_filter( 'wp_dropdown_users_args',  $plugin_admin, 'ad_editor_authors_metabox');
-                
-                $this->loader->add_action('wp_ajax_aol_all_ads', $plugin_admin, 'get_ads_list');
+        //Show all statuses.
+        $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'show_all_post_statuses_in_admin' );
+
+        //Extend WordPress search to include custom fields Join posts and postmeta tables.
+        $this->loader->add_filter('posts_join', $plugin_admin, 'cf_search_join' );
+        $this->loader->add_filter( 'posts_where', $plugin_admin, 'cf_search_where' );
+        $this->loader->add_filter( 'posts_distinct', $plugin_admin, 'cf_search_distinct' );
+        
+        $this->loader->add_action( 'save_post', $plugin_admin, 'save_ad'  );
+        
+        /*Schedule Ad*/
+        $this->loader->add_filter('display_post_states', $plugin_admin, 'add_closed_state', 10, 2);
+        
+        /*Admin Notice*/
+        $this->loader->add_action('admin_notices', $plugin_admin, 'admin_notice');
+        $this->loader->add_action('wp_ajax_aol_dismiss_notice', $plugin_admin, 'admin_dismiss_notice');
+        
+        $this->loader->add_filter( 'wp_dropdown_users_args',  $plugin_admin, 'ad_editor_authors_metabox');
+        
+        $this->loader->add_action('wp_ajax_aol_all_ads', $plugin_admin, 'get_ads_list');
 	}
 
 	/**
