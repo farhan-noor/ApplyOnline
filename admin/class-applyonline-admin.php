@@ -93,13 +93,13 @@ class Applyonline_Admin{
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-                wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all'  );
-                wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-admin.css', array(), $this->version, 'all' );
-                
-                if ( is_aol_admin_screen() ){
-                    wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'select2/css/select2.min.css', array(), $this->version, 'all'  );
-                    wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');                    
-                }                
+            
+                if( !is_aol_admin_screen() ){
+                    return;
+                }
+                wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-admin.css', [], $this->version, 'all' );
+                wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'select2/css/select2.min.css', [], $this->version, 'all'  );
+                wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');                                    
 	}
 
 	/**
@@ -120,19 +120,19 @@ class Applyonline_Admin{
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-                $localize = array();
+                if( !is_aol_admin_screen() ){
+                    return;
+                }
+                $localize = [];
                 $localize['app_submission_message'] = esc_html__('Form has been submitted successfully. If required, we will get back to you shortly!', 'apply-online'); 
                 $localize['app_closed_alert'] = esc_html__('The submission deadline for this ad has passed. Please contact support for more details.', 'apply-online'); 
                 $localize['aol_required_fields_notice'] = esc_html__('Fields with (*)  are compulsory.', 'apply-online');
                 $localize['admin_url'] = admin_url();
                 $localize['aol_url'] = plugins_url( 'apply-online/' );
                 $localize['nonce'] = wp_create_nonce('aol_nonce');
-                wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-admin.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-autocomplete' ), $this->version, TRUE );
-                
-                if( is_aol_admin_screen() ) wp_enqueue_script( 'aol-select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array(), $this->version, TRUE );
-                
+                wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-admin.js', [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-autocomplete' ], $this->version, TRUE );
+                wp_enqueue_script( 'aol-select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array(), $this->version, TRUE );
                 wp_localize_script( $this->plugin_name, 'aol_admin', $localize );
-                
                 wp_enqueue_script( 'jquery-ui-datepicker');
 	}
         

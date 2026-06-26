@@ -161,28 +161,23 @@ class AOL_Ad_Form_Builder_V2 {
 					<div class="aol-ad-fb-v2-modal__body">
 						<div class="aol-ad-fb-v2-modal__columns">
 							<div class="aol-ad-fb-v2-modal__col aol-ad-fb-v2-modal__col--types">
-								<div class="aol-ad-fb-v2-section">
-									<div class="aol-ad-fb-v2-section__title"><?php esc_html_e( 'Element Type', 'apply-online' ); ?></div>
-									<div class="aol-ad-fb-v2-type-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Field types', 'apply-online' ); ?>"></div>
-									<input type="hidden" class="aol-ad-fb-v2-type" value="text" />
-								</div>
+                                                            <div class="aol-ad-fb-v2-section">
+                                                                <div class="aol-ad-fb-v2-section__title"><?php esc_html_e( 'Element Type', 'apply-online' ); ?></div>
+                                                                <div class="aol-ad-fb-v2-type-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Field types', 'apply-online' ); ?>"></div>
+                                                                <input type="hidden" class="aol-ad-fb-v2-type" value="text" />
+                                                            </div>
 							</div>
 							<div class="aol-ad-fb-v2-modal__col aol-ad-fb-v2-modal__col--settings">
 								<div class="aol-ad-fb-v2-section__title aol-ad-fb-v2-settings__title"><?php esc_html_e( 'Field settings', 'apply-online' ); ?></div>
 								<div class="aol-ad-fb-v2-grid">
 							<label data-property="id" class="aol-ad-fb-v2-prop">
 								<span><?php esc_html_e( 'Unique ID', 'apply-online' ); ?> *</span>
-								<input type="text" class="regular-text aol-ad-fb-v2-id" placeholder="first_name" />
+								<input type="text" class="regular-text aol-ad-fb-v2-id" placeholder="<?php esc_attr_e( 'e.g. unique_id', 'apply-online' ); ?>" />
 							</label>
 
 							<label data-property="label" class="aol-ad-fb-v2-prop">
 								<span><?php esc_html_e( 'Label', 'apply-online' ); ?> *</span>
 								<input type="text" class="regular-text aol-ad-fb-v2-label" placeholder="<?php esc_attr_e( 'e.g. First name', 'apply-online' ); ?>" />
-							</label>
-
-							<label data-property="required" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle">
-								<span><?php esc_html_e( 'Required', 'apply-online' ); ?></span>
-								<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
 							</label>
 
 							<label data-property="placeholder" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--placeholder">
@@ -199,6 +194,11 @@ class AOL_Ad_Form_Builder_V2 {
 								<span><?php esc_html_e( 'Options', 'apply-online' ); ?></span>
 								<input type="text" class="regular-text aol-ad-fb-v2-options" placeholder="<?php esc_attr_e( 'Option 1, Option 2', 'apply-online' ); ?>" />
 								<small class="description"><?php esc_html_e( 'Comma separated.', 'apply-online' ); ?></small>
+							</label>
+
+							<label data-property="required" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+								<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
+								<?php esc_html_e( 'Required', 'apply-online' ); ?>
 							</label>
 
 							<label data-property="text" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph aol-ad-fb-v2-span-2">
@@ -243,14 +243,15 @@ class AOL_Ad_Form_Builder_V2 {
 		if ( wp_is_post_revision( $post_id ) ) {
 			return;
 		}
-		if ( empty( $post ) || empty( $post->post_type ) || $post->post_type !== 'aol_ad' ) {
-			return;
-		}
-		if ( ! current_user_can( 'edit_ads', $post_id ) && ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
 		if ( empty( $_POST[ $this->meta_nonce_key ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $this->meta_nonce_key ] ) ), $this->meta_nonce_action ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'edit_ads', $post_id ) ) {
+			return;
+		}
+                $types = get_aol_ad_types();
+		//if ( empty( $post ) || empty( $post->post_type ) || $post->post_type !== 'aol_ad' ) {
+		if ( empty( $post ) || empty( $post->post_type ) || !in_array($post->post_type, $types) ) {
 			return;
 		}
 		if ( ! isset( $_POST[ $this->schema_post_key ] ) ) {
