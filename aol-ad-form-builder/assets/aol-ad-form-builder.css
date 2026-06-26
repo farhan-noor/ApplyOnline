@@ -315,7 +315,13 @@
 .aol-ad-fb-v2-grid label {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 3px;
+        padding-bottom: 10px;
+}
+
+.aol-ad-fb-v2-grid label.inline{
+    flex-direction: row;
+    align-items: center;
 }
 
 .aol-ad-fb-v2-grid label > span {

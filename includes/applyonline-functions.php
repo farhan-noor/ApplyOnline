@@ -162,7 +162,17 @@ function get_aol_ad_post_meta($post_id){
  * Returns Ad types with relevent data.
  */
 function aol_ad_types(){
-    return get_option_fixed('aol_ad_types', array('ad' => array('singular' => esc_html__('Ad','apply-online'), 'plural' => esc_html__('Ads','apply-online'), 'description' => esc_html__('All Ads','apply-online'), 'filters' => array())));
+    return get_option_fixed(
+            'aol_ad_types',
+            [
+            'ad' => [
+                'singular' => esc_html__('Ad','apply-online'),
+                'plural' => esc_html__('Ads','apply-online'),
+                'description' => esc_html__('All Ads','apply-online'),
+                'filters' => []
+                ]
+            ]
+        );
 }
 
 /**
@@ -404,7 +414,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
         $field_key = sanitize_key($field['key']);
         
         $required = $attributes = $wrapper_class = NULL;
-        if( isset( $field['required'] ) AND $field['required'] === '1' ){
+        if( isset( $field['required'] ) AND $field['required'] == '1' ){
             $required = '<span class="required-mark">*</span>';
             $attributes = 'required aria-required="true"';
             $class .= ' required';
