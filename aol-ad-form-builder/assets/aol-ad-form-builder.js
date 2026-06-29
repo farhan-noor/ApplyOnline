@@ -58,6 +58,14 @@
     $wrap.find(".aol-ad-fb-v2-modal").hide();
   }
 
+  function elementKindLabel(kind) {
+    const i18n = (window.aolAdFbV2 && window.aolAdFbV2.i18n) || {};
+    if (kind === "section") {
+      return i18n.formSection || "Form Section";
+    }
+    return i18n.formInput || "Form Input";
+  }
+
   function syncTypeVisibility($wrap, type) {
     const def = getTypeDef(type);
     const allowed = def.properties || [];
@@ -77,20 +85,45 @@
   }
 
   function ensureTypeTabs($wrap) {
-    const $tabs = $wrap.find(".aol-ad-fb-v2-type-tabs");
-    if ($tabs.children().length) return;
+    const $kinds = $wrap.find(".aol-ad-fb-v2-element-kinds");
+    if ($kinds.children().length) return;
 
     const registry = getRegistry();
+    const grouped = { input: [], section: [] };
+
     Object.keys(registry).forEach((k) => {
-      const def = registry[k];
-      const icon = def.icon || "dashicons-admin-generic";
-      const $btn = $('<button type="button" class="aol-ad-fb-v2-type-tab" role="tab"></button>');
-      $btn.attr("data-type", k);
-      $btn.attr("aria-selected", "false");
-      $btn.append('<span class="dashicons ' + icon + '"></span>');
-      $btn.append('<span class="aol-ad-fb-v2-type-tab__label"></span>');
-      $btn.find(".aol-ad-fb-v2-type-tab__label").text(def.label || k);
-      $tabs.append($btn);
+      const kind = registry[k].elementKind || "input";
+      if (!grouped[kind]) {
+        grouped[kind] = [];
+      }
+      grouped[kind].push(k);
+    });
+
+    ["input", "section"].forEach((kindKey) => {
+      const types = grouped[kindKey];
+      if (!types || !types.length) return;
+
+      const $group = $('<div class="aol-ad-fb-v2-kind-group"></div>');
+      $group.attr("data-kind", kindKey);
+      $group.append(
+        '<div class="aol-ad-fb-v2-kind-group__title">' + escHtml(elementKindLabel(kindKey)) + "</div>"
+      );
+
+      const $tabs = $('<div class="aol-ad-fb-v2-type-tabs" role="tablist"></div>');
+      types.forEach((k) => {
+        const def = registry[k];
+        const icon = def.icon || "dashicons-admin-generic";
+        const $btn = $('<button type="button" class="aol-ad-fb-v2-type-tab" role="tab"></button>');
+        $btn.attr("data-type", k);
+        $btn.attr("aria-selected", "false");
+        $btn.append('<span class="dashicons ' + icon + '"></span>');
+        $btn.append('<span class="aol-ad-fb-v2-type-tab__label"></span>');
+        $btn.find(".aol-ad-fb-v2-type-tab__label").text(def.label || k);
+        $tabs.append($btn);
+      });
+
+      $group.append($tabs);
+      $kinds.append($group);
     });
   }
 
@@ -168,10 +201,11 @@
     const type = f.type || "text";
     const help = f.description || "";
     const def = getTypeDef(type);
+    const kindLabel = elementKindLabel(def.elementKind || "input");
 
     const $wrap = $row.find(".aol-ad-fb-v2-preview");
     $wrap.find(".aol-ad-fb-v2-preview__label").text(label);
-    $wrap.find(".aol-ad-fb-v2-preview__type").text(typeLabel(type));
+    $wrap.find(".aol-ad-fb-v2-preview__type").text(kindLabel + " · " + typeLabel(type));
     $wrap.find(".aol-ad-fb-v2-preview__help").text(help);
 
     const $control = $wrap.find(".aol-ad-fb-v2-preview__control");
@@ -291,7 +325,6 @@
     schema.forEach((f, idx) => {
       const $row = $($(tpl.content).children()[0].cloneNode(true));
       $row.attr("data-idx", idx);
-      //$row.find(".col-required").text(f.required ? "Yes" : "No");
       $row.find(".aol-ad-fb-v2-add--inline").attr("data-insert-at", String(idx + 1));
       renderFieldPreview($row, f);
       $tbody.append($row);

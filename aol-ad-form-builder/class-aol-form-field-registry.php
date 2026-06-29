@@ -88,8 +88,9 @@ class AOL_Form_Field_Registry {
 				'defaults'   => isset( $def['defaults'] ) ? $def['defaults'] : array(),
 				'rules'      => isset( $def['rules'] ) ? $def['rules'] : array(),
 				'preview'    => isset( $def['preview'] ) ? $def['preview'] : 'input',
-				'inputType'  => isset( $def['inputType'] ) ? $def['inputType'] : 'text',
-				'choices'    => isset( $def['choices'] ) ? $def['choices'] : '',
+				'inputType'   => isset( $def['inputType'] ) ? $def['inputType'] : 'text',
+				'choices'     => isset( $def['choices'] ) ? $def['choices'] : '',
+				'elementKind' => isset( $def['elementKind'] ) ? $def['elementKind'] : 'input',
 			);
 		}
 		return $out;
@@ -231,7 +232,8 @@ class AOL_Form_Field_Registry {
 	private static function build_registry() {
 		return array(
 			'text'      => array(
-				'type'       => 'text',
+				'type'        => 'text',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Text', 'apply-online' ),
 				'icon'       => 'dashicons-editor-textcolor',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
@@ -241,7 +243,8 @@ class AOL_Form_Field_Registry {
 				'inputType'  => 'text',
 			),
 			'text_area' => array(
-				'type'       => 'text_area',
+				'type'        => 'text_area',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Textarea', 'apply-online' ),
 				'icon'       => 'dashicons-format-aside',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
@@ -250,7 +253,8 @@ class AOL_Form_Field_Registry {
 				'preview'    => 'textarea',
 			),
 			'number'    => array(
-				'type'       => 'number',
+				'type'        => 'number',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Number', 'apply-online' ),
 				'icon'       => 'dashicons-editor-ol',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
@@ -260,7 +264,8 @@ class AOL_Form_Field_Registry {
 				'inputType'  => 'number',
 			),
 			'email'     => array(
-				'type'       => 'email',
+				'type'        => 'email',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Email', 'apply-online' ),
 				'icon'       => 'dashicons-email-alt',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
@@ -270,7 +275,8 @@ class AOL_Form_Field_Registry {
 				'inputType'  => 'email',
 			),
 			'date'      => array(
-				'type'       => 'date',
+				'type'        => 'date',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Date', 'apply-online' ),
 				'icon'       => 'dashicons-calendar',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
@@ -280,7 +286,8 @@ class AOL_Form_Field_Registry {
 				'inputType'  => 'date',
 			),
 			'checkbox'  => array(
-				'type'       => 'checkbox',
+				'type'        => 'checkbox',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Checkbox', 'apply-online' ),
 				'icon'       => 'dashicons-yes',
 				'properties' => array( 'id', 'label', 'required', 'description', 'class', 'options' ),
@@ -290,7 +297,8 @@ class AOL_Form_Field_Registry {
 				'choices'    => 'checkbox',
 			),
 			'radio'     => array(
-				'type'       => 'radio',
+				'type'        => 'radio',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Radio', 'apply-online' ),
 				'icon'       => 'dashicons-marker',
 				'properties' => array( 'id', 'label', 'required', 'description', 'class', 'options', 'preselect' ),
@@ -300,7 +308,8 @@ class AOL_Form_Field_Registry {
 				'choices'    => 'radio',
 			),
 			'dropdown'  => array(
-				'type'       => 'dropdown',
+				'type'        => 'dropdown',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'Dropdown', 'apply-online' ),
 				'icon'       => 'dashicons-sort',
 				'properties' => array( 'id', 'label', 'required', 'description', 'class', 'options' ),
@@ -309,7 +318,8 @@ class AOL_Form_Field_Registry {
 				'preview'    => 'select',
 			),
 			'file'      => array(
-				'type'       => 'file',
+				'type'        => 'file',
+				'elementKind' => 'input',
 				'label'      => esc_html__( 'File', 'apply-online' ),
 				'icon'       => 'dashicons-paperclip',
 				'properties' => array( 'id', 'label', 'required', 'description', 'class', 'allowed_file_types', 'file_max_size' ),
@@ -318,7 +328,8 @@ class AOL_Form_Field_Registry {
 				'preview'    => 'file',
 			),
 			'separator' => array(
-				'type'       => 'separator',
+				'type'        => 'separator',
+				'elementKind' => 'section',
 				'label'      => esc_html__( 'Separator', 'apply-online' ),
 				'icon'       => 'dashicons-minus',
 				'properties' => array( 'id', 'label', 'description' ),
@@ -327,7 +338,8 @@ class AOL_Form_Field_Registry {
 				'preview'    => 'separator',
 			),
 			'paragraph' => array(
-				'type'       => 'paragraph',
+				'type'        => 'paragraph',
+				'elementKind' => 'section',
 				'label'      => esc_html__( 'Paragraph', 'apply-online' ),
 				'icon'       => 'dashicons-editor-justify',
 				'properties' => array( 'id', 'label', 'text', 'height' ),

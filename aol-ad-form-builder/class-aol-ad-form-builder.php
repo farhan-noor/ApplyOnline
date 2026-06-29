@@ -33,7 +33,7 @@ class AOL_Ad_Form_Builder_V2 {
 	public function register_meta_box() {
 		add_meta_box(
 			'aol_ad_form_builder_v2',
-			'<span class="dashicons dashicons-feedback"></span> &nbsp;' . esc_html__( 'Form Builder V2', 'apply-online' ),
+			'<span class="dashicons dashicons-admin-site"></span> &nbsp;' . esc_html__( 'Application Form Builder', 'apply-online' ),
 			array( $this, 'render_meta_box' ),
 			array( 'aol_ad' ),
 			'advanced',
@@ -78,6 +78,8 @@ class AOL_Ad_Form_Builder_V2 {
 					'idRequired'    => esc_html__( 'Unique ID is required.', 'apply-online' ),
 					'labelRequired' => esc_html__( 'Label is required.', 'apply-online' ),
 					'optionsHint'   => esc_html__( 'Comma separated (Option 1, Option 2)', 'apply-online' ),
+					'formInput'     => esc_html__( 'Form Input Fields', 'apply-online' ),
+					'formSection'   => esc_html__( 'Form Section', 'apply-online' ),
 				),
 			)
 		);
@@ -89,7 +91,7 @@ class AOL_Ad_Form_Builder_V2 {
 		?>
 		<div class="aol-ad-fb-v2" data-post-id="<?php echo (int) $post->ID; ?>">
 			<p class="description">
-				<?php esc_html_e( 'Build the application form for this Ad. Fields are stored using the existing ApplyOnline meta keys so the front-end stays compatible.', 'apply-online' ); ?>
+				<?php esc_html_e( 'Build the application form for this Ad.', 'apply-online' ); ?>
 			</p>
 
 			<input type="hidden" name="<?php echo esc_attr( $this->schema_post_key ); ?>" class="aol-ad-fb-v2-schema" value="<?php echo esc_attr( wp_json_encode( $schema ) ); ?>" />
@@ -147,7 +149,6 @@ class AOL_Ad_Form_Builder_V2 {
 							<div class="aol-ad-fb-v2-preview__help"></div>
 						</div>
 					</td>
-					<!--<td class="col-required"></td>-->
 				</tr>
 			</template>
 
@@ -161,14 +162,14 @@ class AOL_Ad_Form_Builder_V2 {
 					<div class="aol-ad-fb-v2-modal__body">
 						<div class="aol-ad-fb-v2-modal__columns">
 							<div class="aol-ad-fb-v2-modal__col aol-ad-fb-v2-modal__col--types">
-                                                            <div class="aol-ad-fb-v2-section">
-                                                                <div class="aol-ad-fb-v2-section__title"><?php esc_html_e( 'Element Type', 'apply-online' ); ?></div>
-                                                                <div class="aol-ad-fb-v2-type-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Field types', 'apply-online' ); ?>"></div>
-                                                                <input type="hidden" class="aol-ad-fb-v2-type" value="text" />
-                                                            </div>
+								<div class="aol-ad-fb-v2-section">
+									<div class="aol-ad-fb-v2-section__title"><?php //esc_html_e( 'Element Type', 'apply-online' ); ?></div>
+									<div class="aol-ad-fb-v2-element-kinds"></div>
+									<input type="hidden" class="aol-ad-fb-v2-type" value="text" />
+								</div>
 							</div>
 							<div class="aol-ad-fb-v2-modal__col aol-ad-fb-v2-modal__col--settings">
-								<div class="aol-ad-fb-v2-section__title aol-ad-fb-v2-settings__title"><?php esc_html_e( 'Field settings', 'apply-online' ); ?></div>
+								<div class="aol-ad-fb-v2-section__title aol-ad-fb-v2-settings__title"><?php esc_html_e( 'Element settings', 'apply-online' ); ?></div>
 								<div class="aol-ad-fb-v2-grid">
 							<label data-property="id" class="aol-ad-fb-v2-prop">
 								<span><?php esc_html_e( 'Unique ID', 'apply-online' ); ?> *</span>

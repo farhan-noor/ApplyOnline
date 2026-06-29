@@ -605,7 +605,7 @@ function aol_application_data_v2($post, $keys){
         $meta[$key] = maybe_unserialize(maybe_unserialize($val));
     }
     
-    $keys_order = $meta['_aol_fields_order'];
+    $keys_order = empty( $meta['_aol_fields_order'] ) ? array_keys ($meta) : $meta['_aol_fields_order'];
 
     $data = [];
     foreach ( $keys_order as $key ):

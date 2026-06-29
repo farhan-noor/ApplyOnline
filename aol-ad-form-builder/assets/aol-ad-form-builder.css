@@ -27,8 +27,7 @@
 	padding-top: 22px;
 }
 
-.aol-ad-fb-v2-table .col-order,
-.aol-ad-fb-v2-table .col-required {
+.aol-ad-fb-v2-table .col-order {
 	vertical-align: top;
 	padding-top: 22px;
 }
@@ -242,6 +241,27 @@
 
 .aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-section {
 	margin-bottom: 0;
+}
+
+.aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-element-kinds {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.aol-ad-fb-v2-kind-group__title {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #646970;
+	margin-bottom: 6px;
+}
+
+.aol-ad-fb-v2-kind-group .aol-ad-fb-v2-type-tabs {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 6px;
 }
 
 .aol-ad-fb-v2-modal__col--types .aol-ad-fb-v2-type-tabs {
