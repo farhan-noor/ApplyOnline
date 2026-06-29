@@ -269,6 +269,7 @@ class Applyonline_Rest_Functions{
                 else  unset($ad_transcript[$key]);
             }
             update_post_meta($pid, 'ad_transcript', $ad_transcript );
+            update_post_meta($post_id, $args, $parent);
             /* End Saving Ad Transcript Since v2.2 */
 
             //wp_set_post_terms( $pid, 'pending', 'aol_application_status' ); Depreicated since 2.6.7.4

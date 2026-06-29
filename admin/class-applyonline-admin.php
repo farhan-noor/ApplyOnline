@@ -688,28 +688,29 @@ class Applyonline_Admin{
          */
         public function aol_application_post_editor ($post){
             //global $post;
-            if ( !empty( $post ) and $post->post_type =='aol_application' ):
-                ?>
-                <div class="wrap"><div id="icon-tools" class="icon32"></div>
-                    <h3>#<?php echo (int)$post->ID.' - '. sanitize_text_field($post->post_title); ?></h3><hr />
-                        <?php 
-                        /*
-                        _aol_attachment feature has been obsolete since version 1.4, It is now being treated as Post Meta.
-                        if ( in_array ( '_aol_attachment', $keys ) ):
-                            $files = get_post_meta ( $post->ID, '_aol_attachment', true );
-                            ?>
-                        &nbsp; &nbsp; <small><a href="<?php echo esc_url(get_post_meta ( $post->ID, '_aol_attachment', true )); ?>" target="_blank" ><?php echo esc_html__( 'Attachment' , 'apply-online' );?></a></small>
-                        <?php 
-                        endif; 
-                         * 
-                         */
+            if( $post->post_type != 'aol_application' ){
+                return;
+            }
+            ?>
+            <div class="wrap"><div id="icon-tools" class="icon32"></div>
+                <h3>#<?php echo (int)$post->ID.' - '. sanitize_text_field($post->post_title); ?></h3><hr />
+                    <?php 
+                    /*
+                    _aol_attachment feature has been obsolete since version 1.4, It is now being treated as Post Meta.
+                    if ( in_array ( '_aol_attachment', $keys ) ):
+                        $files = get_post_meta ( $post->ID, '_aol_attachment', true );
                         ?>
-                    <?php do_action('aol_before_application', $post); ?>
-                    <?php echo aol_application_table($post); ?>
-                    <?php do_action('aol_after_application', $post); ?>
-                </div>
-                <?php
-            endif;
+                    &nbsp; &nbsp; <small><a href="<?php echo esc_url(get_post_meta ( $post->ID, '_aol_attachment', true )); ?>" target="_blank" ><?php echo esc_html__( 'Attachment' , 'apply-online' );?></a></small>
+                    <?php 
+                    endif; 
+                     * 
+                     */
+                    ?>
+                <?php do_action('aol_before_application', $post); ?>
+                <?php echo aol_application_table($post); ?>
+                <?php do_action('aol_after_application', $post); ?>
+            </div>
+            <?php
         }        
         
         function aol_meta_boxes(){
@@ -1011,9 +1012,9 @@ class Applyonline_Admin{
         public function __construct() {
             //$this->app_field_types = $this->app_field_types(); @todo: Remove safely
             
-            add_action( 'save_post', array($this, 'save_form_elements'),1 );
+            //add_action( 'save_post', array($this, 'save_form_elements'),1 );
             
-            add_action( 'add_meta_boxes', array($this, 'aol_meta_boxes'),1 );
+            //add_action( 'add_meta_boxes', array($this, 'aol_meta_boxes'),1 );
             
             /*Ajax Calls*/
             add_action("wp_ajax_aol_template_render", array($this, "template_form_callback"));

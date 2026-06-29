@@ -113,7 +113,7 @@ class Applyonline_Public {
                     apply_filters('aol_js_vars', $aol_js_vars)
                 );
 	}
-        
+
         public function check_ad_closing_status($query){
             $types = get_aol_ad_types();
             if(!is_admin() and isset($query->query['post_type']) and in_array($query->query['post_type'], $types)){
