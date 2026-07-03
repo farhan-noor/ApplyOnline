@@ -171,56 +171,65 @@ class AOL_Ad_Form_Builder_V2 {
 							<div class="aol-ad-fb-v2-modal__col aol-ad-fb-v2-modal__col--settings">
 								<div class="aol-ad-fb-v2-section__title aol-ad-fb-v2-settings__title"><?php esc_html_e( 'Element settings', 'apply-online' ); ?></div>
 								<div class="aol-ad-fb-v2-grid">
-							<label data-property="id" class="aol-ad-fb-v2-prop">
-								<span><?php esc_html_e( 'Unique ID', 'apply-online' ); ?> *</span>
-								<input type="text" class="regular-text aol-ad-fb-v2-id" placeholder="<?php esc_attr_e( 'e.g. unique_id', 'apply-online' ); ?>" />
-							</label>
+									<label data-property="id" class="aol-ad-fb-v2-prop">
+										<span><?php esc_html_e( 'Unique ID', 'apply-online' ); ?> *</span>
+										<input type="text" class="regular-text aol-ad-fb-v2-id" placeholder="<?php esc_attr_e( 'e.g. unique_id', 'apply-online' ); ?>" />
+																		<small class="description"><?= esc_html__('small letters, dashes & underscores only.', 'apply-online') ?></small>
+									</label>
 
-							<label data-property="label" class="aol-ad-fb-v2-prop">
-								<span><?php esc_html_e( 'Label', 'apply-online' ); ?> *</span>
-								<input type="text" class="regular-text aol-ad-fb-v2-label" placeholder="<?php esc_attr_e( 'e.g. First name', 'apply-online' ); ?>" />
-							</label>
+									<label data-property="label" class="aol-ad-fb-v2-prop">
+										<span><?php esc_html_e( 'Label', 'apply-online' ); ?> *</span>
+										<input type="text" class="regular-text aol-ad-fb-v2-label" placeholder="<?php esc_attr_e( 'e.g. Full name', 'apply-online' ); ?>" />
+									</label>
 
-							<label data-property="placeholder" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--placeholder">
-								<span><?php esc_html_e( 'Placeholder', 'apply-online' ); ?></span>
-								<input type="text" class="regular-text aol-ad-fb-v2-placeholder" />
-							</label>
 
-							<label data-property="description" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--help">
-								<span><?php esc_html_e( 'Help text', 'apply-online' ); ?></span>
-								<input type="text" class="regular-text aol-ad-fb-v2-description" />
-							</label>
+									<label data-property="placeholder" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--placeholder">
+										<span><?php esc_html_e( 'Placeholder', 'apply-online' ); ?></span>
+										<input type="text" class="regular-text aol-ad-fb-v2-placeholder" />
+									</label>
 
-							<label data-property="options" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--options">
-								<span><?php esc_html_e( 'Options', 'apply-online' ); ?></span>
-								<input type="text" class="regular-text aol-ad-fb-v2-options" placeholder="<?php esc_attr_e( 'Option 1, Option 2', 'apply-online' ); ?>" />
-								<small class="description"><?php esc_html_e( 'Comma separated.', 'apply-online' ); ?></small>
-							</label>
+									<label data-property="description" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--help">
+										<span><?php esc_html_e( 'Help text', 'apply-online' ); ?></span>
+										<input type="text" class="regular-text aol-ad-fb-v2-description" />
+									</label>
 
-							<label data-property="required" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
-								<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
-								<?php esc_html_e( 'Required', 'apply-online' ); ?>
-							</label>
+									<label data-property="options" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--options">
+										<span><?php esc_html_e( 'Options', 'apply-online' ); ?></span>
+										<input type="text" class="regular-text aol-ad-fb-v2-options" placeholder="<?php esc_attr_e( 'Option 1, Option 2', 'apply-online' ); ?>" />
+										<small class="description"><?php esc_html_e( 'Comma separated list.', 'apply-online' ); ?></small>
+									</label>
 
-							<label data-property="text" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph aol-ad-fb-v2-span-2">
-								<span><?php esc_html_e( 'Paragraph text', 'apply-online' ); ?></span>
-								<textarea class="large-text aol-ad-fb-v2-text" rows="4"></textarea>
-							</label>
+									<label data-property="required" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+										<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
+										<?php esc_html_e( 'Required', 'apply-online' ); ?>
+									</label>
 
-							<label data-property="height" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph">
-								<span><?php esc_html_e( 'Fixed height (px)', 'apply-online' ); ?></span>
-								<input type="number" class="small-text aol-ad-fb-v2-height" min="0" value="0" />
-							</label>
+									<div data-property="middle_name">
+										<label data-property="middle_name" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+											<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
+											<?php esc_html_e( 'Enable Middle Name', 'apply-online' ); ?>
+										</label>
+										<p class="description"><?php esc_html_e( 'First and last names are collected by default.', 'apply-online' ); ?></p>
+									</div>
+									<label data-property="text" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph aol-ad-fb-v2-span-2">
+										<span><?php esc_html_e( 'Paragraph text', 'apply-online' ); ?></span>
+										<textarea class="large-text aol-ad-fb-v2-text" rows="4"></textarea>
+									</label>
 
-							<label data-property="allowed_file_types" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--file">
-								<span><?php esc_html_e( 'Allowed file types', 'apply-online' ); ?></span>
-								<input type="text" class="regular-text aol-ad-fb-v2-allowed-file-types" placeholder="pdf, doc, docx" />
-							</label>
+									<label data-property="height" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph">
+										<span><?php esc_html_e( 'Fixed height (px)', 'apply-online' ); ?></span>
+										<input type="number" class="small-text aol-ad-fb-v2-height" min="0" value="0" />
+									</label>
 
-							<label data-property="file_max_size" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--file">
-								<span><?php esc_html_e( 'Max size (MB)', 'apply-online' ); ?></span>
-								<input type="number" class="small-text aol-ad-fb-v2-file-max-size" min="0" />
-							</label>
+									<label data-property="allowed_file_types" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--file">
+										<span><?php esc_html_e( 'Allowed file types', 'apply-online' ); ?></span>
+										<input type="text" class="regular-text aol-ad-fb-v2-allowed-file-types" placeholder="pdf, doc, docx" />
+									</label>
+
+									<label data-property="file_max_size" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--file">
+										<span><?php esc_html_e( 'Max size (MB)', 'apply-online' ); ?></span>
+										<input type="number" class="small-text aol-ad-fb-v2-file-max-size" min="0" />
+									</label>
 								</div>
 							</div>
 						</div>

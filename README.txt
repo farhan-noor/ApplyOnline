@@ -5,7 +5,7 @@ Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 2.6.8.1
+Stable tag: 2.7
 Requires PHP: 7.0
 License: GPLv2 or later
 
@@ -16,13 +16,13 @@ Powerful & intuitive plugin to post ads and start receiving applications online.
 Focused on stability and simplicity, with this plugin you can create a job board, event bookings or open online registration of courses & classes and start receiving applications from your website out of the box.
 
 = The Most User Friendly WordPress Application Form Builder and Manager =
-Create stunning application forms using drag and drop form builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wpreloaded.com/plugins/apply-online "World's #1 Online Application Form Builder & Manager") for a live demo.
+Create stunning application forms using drag and drop form builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wordpress.org/plugins/apply-online/?preview=1 "World's #1 Online Application Form Builder & Manager") for a live demo.
 
 = No Designing or Development Skills Required =
 Not a tech savvy? ApplyOnline plugin is the solution. Its intuitive drag and drop form builder is made for you, so you may not need a developer and/or designer to create an Application Form Management System for you. Very light on your website without creating any mess and beautifully integrates without worrying for design issues.
 
 = Setup is as easy as 1,2,3 =
-1. In your WordPress admin panel, go to *Plugins/Add New* section and search for Apply Online in the search box. Install and activate the plugin created by Spider Teams.
+1. In your WordPress admin panel, go to *Plugins/Add New* section and search for ApplyOnline in the search box.
 2. After activation, go to All Ads section in your WordPress admin panel and create your desired ads with drag and drop Application Form Builder.
 3. To list ads on the front-end, create a dedicated WordPress page and write shortcode [aol]. isn't it so easy?
 
@@ -53,17 +53,15 @@ Does your organization collect admission forms and also looking for job ads? Loo
 * **Applications Exporter:** Export individual application as PDF & all applications of an ad as CSV.
 * **Application Dropbox:** Save each application form received in your Dropbox account.
 * **ApplyOnline Conditional Fields:** Show/hide required form fields by setting conditions e.g If age is 30years or above, show marital status form field.
-* **Apply Online Captcha:** An effective security solution that adds captcha challenge at the bottom of the application form to keep bots apart.
+* **ApplyOnline Captcha:** An effective security solution that adds captcha challenge at the bottom of the application form to keep bots apart.
 
-[Click Here](https://wpreloaded.com/plugins/apply-online "Apply Online plugin") for a test drive. Your suggestions and error reports can really help to improve this plugin.
-
-* Created with love by [Spider Teams](https://spiderteams.com/home "We create the web!")
+[Click Here](https://wordpress.org/plugins/apply-online/?preview=1 "ApplyOnline plugin") for a test drive. Your suggestions and error reports can really help to improve this plugin.
 
 == Installation ==
-1. Go to Plugins/Add New section, Search for ApplyOnline in the search box and install the plugin created by Spider Teams.
+1. Go to Plugins/Add New section, Search for ApplyOnline in the search box and install the plugin created by Farhan Noor.
 1. After activation, go to All Ads section in your WordPress admin panel and create your desired ads with drag and drop Application Form Builder.
 1. To list ads on the front-end, create a dedicated WordPress page and write shortcode [aol]. isn't it so easy?
-1. For more information go to FAQs section in your WordPress admin panel under **Apply Online/Settings** section.
+1. For more information go to FAQs section in your WordPress admin panel under **ApplyOnline/Settings** section.
 
 == Screenshots ==
 
@@ -112,10 +110,12 @@ Different layout options e.g. grid layout, list layout, sidebar filter, popup fo
 Secure mail with SMTP options.
 Consent or terms & conditions field.
 
-= New Version=
-Fixed: Undefined property: Applyonline_Applications::$version on line 801 in admin\class-applyonline-admin.php 
-
-=2.6.8.2=
+= 2.7 =
+New: Application form builder v2 replacing legacy form builder.
+Fixed: Application form fieldset styling.
+Fixed: Application form select field default value to none.
+Fixed: Separator class & styling added in received application table in admin panel & print preview.
+Fixed: Undefined property: Applyonline_Applications::$version on line 801 in admin\class-applyonline-admin.php
 Fixed: Nonce expired generic error message replaced with a more specific error message.
 Fixed: Application form invalid email error formation.
 
@@ -296,7 +296,7 @@ Fixed: Paragraph field text added in the received application & print format.
 * Fixed: Time always saved as 11:59pm.
 
 = 2.0.1 =
-* Fixed: Template Form Builder in Apply Online/Settings section.
+* Fixed: Template Form Builder in ApplyOnline/Settings section.
 
 = 2.0 =
 * New: Enhanced Form Builder with great user interface.
@@ -414,7 +414,7 @@ Fixed: Paragraph field text added in the received application & print format.
 * Fixed: Application form fields sorting.
 
 = 1.8.1 =
-* Fixed: Apply Online Metabox hook.
+* Fixed: ApplyOnline Metabox hook.
 
 = 1.8 =
 * New: Thumbnail support for ads.
@@ -493,5 +493,8 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
-= 2.6.7.6 =
+= 2.6.9 =
+ Major update, maintenance & security releases, upgrade immediately.
+
+= 2.6.8 =
  Maintenance and security releases, upgrade immediately.

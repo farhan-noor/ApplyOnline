@@ -449,6 +449,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
 
             case 'dropdown':
                 $form_output .= $wrapper_start.'<div id="'.$field_key.'" ><select name="'.$prepend.$field_key.'" id="'.$prepend.$field_key.'" class="form-control '.$class.'" id="'.$prepend.$field_key.'" '.$attributes.' aria-describedby="help'.$field_key.'">';
+                $form_output .= '<option value=""><i>'.esc_html__('Not Selected', 'apply-online').'</i></option>';
                 foreach ($field['options'] as $key => $option) {
                     $selected = ($option == $value) ? 'selected="selected"': NULL; 
                     $form_output .= '<option class="" value="'.esc_attr($key).'" '.$selected.' >'. sanitize_text_field($option).' </option>';
@@ -647,7 +648,12 @@ function aol_application_table($post, $classes = 'aol-table widefat striped'){
         <?php
         $rows = aol_application_data($post);
         foreach ( $rows as $row ):
-                echo '<tr>';
+            if( $row['type'] == 'separator' ){
+                echo '<tr class="separator">';
+                echo '<th colspan="2">' . sanitize_text_field($row['label']) . '</th>';
+                echo '</tr>';
+            } else{
+                echo "<tr>";
                     echo '<td>' . sanitize_text_field($row['label']) . '</td>';
                     echo '<td>';
                     if(empty($row['value'])) {
@@ -657,6 +663,7 @@ function aol_application_table($post, $classes = 'aol-table widefat striped'){
                     }
                     echo '</td>';
                 echo '</tr>';
+            }
         endforeach;
         ?>
     </table>

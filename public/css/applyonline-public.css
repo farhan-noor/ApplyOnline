@@ -226,8 +226,8 @@
 .aol-lg-offset-1{margin-left:8.33333333%}
 .aol-lg-offset-0{margin-left:0}
 }
-.aol-wrapper fieldset{padding:0;margin:0;border:0;min-width:0}
-.aol-wrapper legend{display:block;width:100%;padding:0;margin-bottom:20px;font-size:21px;line-height:inherit;color:#333;border:0;border-bottom:1px solid #e5e5e5}
+.aol-wrapper fieldset{min-width:0}
+.aol-wrapper legend{font-size:21px;line-height:inherit;color:#333;border:0;border-bottom:1px solid #e5e5e5}
 .aol-wrapper fieldset .section-info{margin-bottom:20px; margin-top:-20px; display: block}
 .aol-wrapper label{display:inline-block;max-width:100%;margin-bottom:5px;font-weight:bold}
 .aol-wrapper input[type="search"]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
