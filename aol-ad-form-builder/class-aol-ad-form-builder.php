@@ -79,7 +79,7 @@ class AOL_Ad_Form_Builder_V2 {
 					'labelRequired' => esc_html__( 'Label is required.', 'apply-online' ),
 					'optionsHint'   => esc_html__( 'Comma separated (Option 1, Option 2)', 'apply-online' ),
 					'formInput'     => esc_html__( 'Form Input Fields', 'apply-online' ),
-					'formSection'   => esc_html__( 'Form Section', 'apply-online' ),
+					'formSection'   => esc_html__( 'Form Sections', 'apply-online' ),
 				),
 			)
 		);
@@ -133,7 +133,6 @@ class AOL_Ad_Form_Builder_V2 {
 									<span class="dashicons dashicons-arrow-up-alt2" aria-hidden="true"></span>
 									<span class="screen-reader-text"><?php esc_html_e( 'Move up', 'apply-online' ); ?></span>
 								</button>
-
 								<button type="button" class="button button-small aol-ad-fb-v2-icon-btn aol-ad-fb-v2-down" aria-label="<?php esc_attr_e( 'Move down', 'apply-online' ); ?>" title="<?php esc_attr_e( 'Move down', 'apply-online' ); ?>">
 									<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
 									<span class="screen-reader-text"><?php esc_html_e( 'Move down', 'apply-online' ); ?></span>
@@ -155,7 +154,9 @@ class AOL_Ad_Form_Builder_V2 {
 			<div class="aol-ad-fb-v2-modal" style="display:none;">
 				<div class="aol-ad-fb-v2-modal__inner">
 					<div class="aol-ad-fb-v2-modal__header">
-						<h3 class="aol-ad-fb-v2-modal__title"><?php esc_html_e( 'New Form Element', 'apply-online' ); ?></h3>
+						<h3 class="aol-ad-fb-v2-modal__title">
+                                                    <?php esc_html_e( 'New Form Element', 'apply-online' ); ?>
+                                                </h3>
 						<button type="button" class="button-link aol-ad-fb-v2-close" aria-label="<?php esc_attr_e( 'Close', 'apply-online' ); ?>">×</button>
 					</div>
 
@@ -174,7 +175,7 @@ class AOL_Ad_Form_Builder_V2 {
 									<label data-property="id" class="aol-ad-fb-v2-prop">
 										<span><?php esc_html_e( 'Unique ID', 'apply-online' ); ?> *</span>
 										<input type="text" class="regular-text aol-ad-fb-v2-id" placeholder="<?php esc_attr_e( 'e.g. unique_id', 'apply-online' ); ?>" />
-																		<small class="description"><?= esc_html__('small letters, dashes & underscores only.', 'apply-online') ?></small>
+										<small class="description"><?= esc_html__('small letters, dashes & underscores only.', 'apply-online') ?></small>
 									</label>
 
 									<label data-property="label" class="aol-ad-fb-v2-prop">
@@ -182,10 +183,22 @@ class AOL_Ad_Form_Builder_V2 {
 										<input type="text" class="regular-text aol-ad-fb-v2-label" placeholder="<?php esc_attr_e( 'e.g. Full name', 'apply-online' ); ?>" />
 									</label>
 
+                                                                        <div data-property="names">
+                                                                            <label data-property="label" class="aol-ad-fb-v2-prop">
+                                                                                    <span><?php esc_html_e( 'Label', 'apply-online' ); ?> *</span>
+                                                                                    <input type="text" class="regular-text aol-ad-fb-v2-label" placeholder="<?php esc_attr_e( 'e.g. Full name', 'apply-online' ); ?>" />
+                                                                            </label>
+                                                                        </div>
 
 									<label data-property="placeholder" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--placeholder">
 										<span><?php esc_html_e( 'Placeholder', 'apply-online' ); ?></span>
 										<input type="text" class="regular-text aol-ad-fb-v2-placeholder" />
+									</label>
+                                                                    
+                                                                        <label data-property="title_list" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--nametitle">
+										<span><?php esc_html_e( 'Title list', 'apply-online' ); ?></span>
+										<input type="text" class="regular-text aol-ad-fb-v2-title_list" value="Mr, Miss, Mrs, Ms" />
+                                                                                <small class="description"><?php esc_html_e( 'Comma separated list.', 'apply-online' ); ?></small>
 									</label>
 
 									<label data-property="description" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--help">
@@ -203,14 +216,26 @@ class AOL_Ad_Form_Builder_V2 {
 										<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
 										<?php esc_html_e( 'Required', 'apply-online' ); ?>
 									</label>
+                                                                    
+									<label data-property="notify" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+										<input type="checkbox" class="aol-ad-fb-v2-notify" value="1" />
+										<?php esc_html_e( 'Notify this email', 'apply-online' ); ?>
+									</label>
 
-									<div data-property="middle_name">
-										<label data-property="middle_name" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
-											<input type="checkbox" class="aol-ad-fb-v2-required" value="1" />
-											<?php esc_html_e( 'Enable Middle Name', 'apply-online' ); ?>
+									<div data-property="title_switch">
+										<label data-property="title_switch" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+											<input type="checkbox" class="aol-ad-fb-v2-title_switch" value="1" />
+											<?php esc_html_e( 'Title', 'apply-online' ); ?>
 										</label>
-										<p class="description"><?php esc_html_e( 'First and last names are collected by default.', 'apply-online' ); ?></p>
 									</div>
+                                                                    
+                                                                        <div data-property="middle_name_switch">
+                                                                                <label data-property="middle_name_switch" class="aol-ad-fb-v2-prop aol-ad-fb-v2-toggle inline">
+                                                                                        <input type="checkbox" class="aol-ad-fb-v2-middle_name_switch" value="1" />
+                                                                                        <?php esc_html_e( 'Middle name', 'apply-online' ); ?>
+                                                                                </label>
+                                                                                <p class="description"><?php esc_html_e( 'First and last names are collected by default.', 'apply-online' ); ?></p>
+                                                                        </div>
 									<label data-property="text" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--paragraph aol-ad-fb-v2-span-2">
 										<span><?php esc_html_e( 'Paragraph text', 'apply-online' ); ?></span>
 										<textarea class="large-text aol-ad-fb-v2-text" rows="4"></textarea>
@@ -228,7 +253,7 @@ class AOL_Ad_Form_Builder_V2 {
 
 									<label data-property="file_max_size" class="aol-ad-fb-v2-prop aol-ad-fb-v2-only aol-ad-fb-v2-only--file">
 										<span><?php esc_html_e( 'Max size (MB)', 'apply-online' ); ?></span>
-										<input type="number" class="small-text aol-ad-fb-v2-file-max-size" min="0" />
+										<input type="number" class="small-text aol-ad-fb-v2-file-max-size" min="1" />
 									</label>
 								</div>
 							</div>

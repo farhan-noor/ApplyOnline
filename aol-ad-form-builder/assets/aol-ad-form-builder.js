@@ -3,6 +3,8 @@
     id: ".aol-ad-fb-v2-id",
     label: ".aol-ad-fb-v2-label",
     required: ".aol-ad-fb-v2-required",
+    notify: ".aol-ad-fb-v2-notify",
+    middle_name_switch: ".aol-ad-fb-v2-middle_name_switch",
     placeholder: ".aol-ad-fb-v2-placeholder",
     description: ".aol-ad-fb-v2-description",
     options: ".aol-ad-fb-v2-options",

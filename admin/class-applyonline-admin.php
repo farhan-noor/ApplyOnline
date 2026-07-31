@@ -893,17 +893,7 @@ class Applyonline_Admin{
          * @return  void
          */
         public function applicants_list_columns_value( $column, $post_id ){
-            //Depricated due to perfomrance issues.
-            /*
-            $keys = get_post_custom_keys( $post_id );
-            $values = get_post_meta($post_id);
-            $new = array();
-            foreach($values as $key => $val){
-                $new[$key]=$val[0];
-            }
-            $name = aol_array_find('Name', $keys);
-             * 
-             */
+
             $name = strtolower( get_option_fixed('aol_name_column_field', 'name', FALSE) );
 
             switch ( $column ) {
@@ -923,19 +913,22 @@ class Applyonline_Admin{
                 //Depricated due to perfomrance issues.
                 case 'applicant' :
                     if($name === FALSE):
-                        $applicant_name = esc_html__('Undefined', 'apply-online');
+                        $applicant_name = '<i>'.esc_html__('Undefined', 'apply-online').'</i>';
                     else:
                         //$applicant = apply_filters( 'aol_applicants_table_name_column', get_post_meta( $post_id, $keys[ $name ], TRUE ), $post_id, $keys[ $name ] );
                         //if(is_object($applicant)) $applicant = NULL;
                         //elseif(is_array($applicant))    $applicant = implode(',', $applicant);
                         $applicant = get_post_meta($post_id, "_aol_app_$name", TRUE);
+                    /*
                         $applicant_name = sprintf( 
                                 '<a href="%s">%s</a>', 
                                 esc_url( add_query_arg( array ( 'post' => $post_id, 'action' => 'edit' ), 'post.php' ) ), 
                                 esc_html( $applicant )
                         );
+                     * 
+                     */
                     endif;
-                    echo sanitize_text_field($applicant_name); 
+                    echo sanitize_text_field( is_array($applicant) ? implode(' ', $applicant) : $applicant );
                     break;
                 case 'status' :
                     echo sanitize_text_field( get_post_status($post_id) );

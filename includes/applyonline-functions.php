@@ -425,6 +425,15 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
         $description = isset($field['description']) ? sanitize_text_field( $field['description'] ) : NULL;
         $text = isset($field['text']) ? sanitize_textarea_field( $field['text'] ) : $description;
         $style = (isset($field['height']) and (int)$field['height'] > 0) ? 'height:'.(int)$field['height'].'px' : NULL;
+        $title_list = NULL;
+        if( !empty($field['title_switch']) ){
+            $title_list = '<select>';
+            foreach(str_getcsv($field['title_list']) as $item){
+                $title_list .="<option value='$item'>$item</option>";
+            }
+            $title_list .= '</select>';            
+        }
+        
         if(isset($field['limit']) AND !empty($field['limit'])){
             $limit = (int)$field['limit'];
             $limit_output = '<div class="the-count"><span class="current">'. strlen($value).'</span><span class="maximum">/'.$limit.'</span></div>';
@@ -454,7 +463,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                     $selected = ($option == $value) ? 'selected="selected"': NULL; 
                     $form_output .= '<option class="" value="'.esc_attr($key).'" '.$selected.' >'. sanitize_text_field($option).' </option>';
                 }
-                $form_output .= '</select><span id="help'.$field_key.'" class="help-block">'.$description.'</span></div></div>';
+                $form_output .= '</select><span id="help_'.$field_key.'" class="help-block">'.$description.'</span></div></div>';
                 break;
 
             case 'radio':
@@ -505,7 +514,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
             case 'separator':
                 if($fieldset == 1) $form_output .=  '</fieldset>';
                 $form_output .= '<fieldset><legend>'.$label.'</legend>';
-                $form_output .= '<small id="help'.$field_key.'" class="help-block">'.$description.'</small>';
+                $form_output .= '<small id="help_'.$field_key.'" class="section-info">'.$description.'</small>';
                 $fieldset = 1;
                 break;
                 
@@ -515,6 +524,15 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
 
             case 'text_area':
                 $form_output .= $wrapper_start. '<textarea name="'.$prepend.$field_key.'" '.$placeholder.' class="form-control '.$class.'" id="'.$prepend.$field_key.'" '.$attributes.' aria-describedby="help'.$field_key.'" maxlength="'.$limit.'">'. $value.'</textarea>'.$limit_output.$wrapper_end;
+                break;
+            
+            case 'name':
+                $form_output .= $wrapper_start.'<div class="aol-flex">';
+                $form_output .=$title_list;
+                $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[first]" class="form-control aol-name '.$class.'" id="'.$prepend.$field_key.'-first" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="First">';
+                if( isset( $field['middle_name_switch'] ) AND $field['middle_name_switch'] == 1 ) $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[middle]" class="form-control aol-name '.$class.'" id="'.$prepend.$field_key.'-middle" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="Middle">';
+                $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[last]" class="form-control aol-name '.$class.'" id="'.$prepend.$field_key.'-last" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="Last">';
+                $form_output .='</div>'.$wrapper_end;
                 break;
 
             //case 'text':
@@ -627,6 +645,10 @@ function aol_application_data_v2($post, $keys){
                 
                 case 'paragraph':
                     $val = empty($val) ? $meta[$key]['text'] : $val;
+                    break;
+                
+                case 'name':
+                    $val = $val['first'].' - '.$val['middle'].' - '.$val['last'];
                     break;
                 
                 default :

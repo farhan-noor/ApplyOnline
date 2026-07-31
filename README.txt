@@ -5,7 +5,7 @@ Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 2.7
+Stable tag: 2.7.1
 Requires PHP: 7.0
 License: GPLv2 or later
 
@@ -109,6 +109,12 @@ Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
 Secure mail with SMTP options.
 Consent or terms & conditions field.
+List view & horizontal view options for Checkbox & Radio button fields.
+
+= 2.7.1 =
+New: Name form field in the application form builder in the admin panel and on the public side.
+Fixed: PHP Warnings during application form processing & saving.
+Fixed: Notify Email checkbox restored in application form builder.
 
 = 2.7 =
 New: Application form builder v2 replacing legacy form builder.

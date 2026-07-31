@@ -235,6 +235,7 @@ class AOL_Form_Field_Registry {
 				'type'        => 'text',
 				'elementKind' => 'input',
 				'label'      => esc_html__( 'Text', 'apply-online' ),
+                                'description' => esc_html__( 'Single line text input field', 'apply-online' ),
 				'icon'       => 'dashicons-editor-textcolor',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
 				'defaults'   => array( 'required' => 0 ),
@@ -246,6 +247,7 @@ class AOL_Form_Field_Registry {
 				'type'        => 'text_area',
 				'elementKind' => 'input',
 				'label'      => esc_html__( 'Textarea', 'apply-online' ),
+                                'description' => esc_html__( 'Multi line text input field', 'apply-online' ),
 				'icon'       => 'dashicons-format-aside',
 				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
 				'defaults'   => array( 'required' => 0 ),
@@ -253,15 +255,15 @@ class AOL_Form_Field_Registry {
 				'preview'    => 'textarea',
 			),
 			'name'      => array(
-				'type'        => 'text',
+				'type'        => 'name',
 				'elementKind' => 'input',
 				'label'      => esc_html__( 'Name', 'apply-online' ),
-				'description' => esc_html__( 'This field is used to collect the full name of the applicant.', 'apply-online' ),
+				'description' => esc_html__( 'This field is used to collect the first, middle and last names of the applicant', 'apply-online' ),
 				'icon'       => 'dashicons-admin-users',
-				'properties' => array( 'id', 'label', 'required', 'middle_name', 'description', 'class', 'limit' ),
-				'defaults'   => array( 'required' => 0 ),
-				'rules'      => array( 'id' => 'required', 'label' => 'required', 'last_name' => 'required' ),
-				'preview'    => 'input',
+				'properties' => array( 'id', 'label', 'required', 'title_list', 'middle_name', 'last_name' , 'title_switch', 'middle_name_switch', 'description', 'class', 'limit' ),
+				'defaults'   => array( 'required' => 1, 'middle_name_switch' => 1, 'title_switch' => 0  ),
+				'rules'      => array( 'id' => 'required', 'label' => 'required' ),
+				'preview'    => 'name',
 				'inputType'  => 'text',
 			),
 			'number'    => array(
@@ -279,8 +281,9 @@ class AOL_Form_Field_Registry {
 				'type'        => 'email',
 				'elementKind' => 'input',
 				'label'      => esc_html__( 'Email', 'apply-online' ),
+                                'description' => esc_html__( 'Single line email field', 'apply-online' ),
 				'icon'       => 'dashicons-email-alt',
-				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'limit' ),
+				'properties' => array( 'id', 'label', 'required', 'placeholder', 'description', 'class', 'notify' ),
 				'defaults'   => array( 'required' => 0 ),
 				'rules'      => array( 'id' => 'required', 'label' => 'required' ),
 				'preview'    => 'input',
@@ -301,6 +304,7 @@ class AOL_Form_Field_Registry {
 				'type'        => 'checkbox',
 				'elementKind' => 'input',
 				'label'      => esc_html__( 'Checkbox', 'apply-online' ),
+                                'description' => esc_html__( 'Multiple choice fields', 'apply-online' ),
 				'icon'       => 'dashicons-yes',
 				'properties' => array( 'id', 'label', 'required', 'description', 'class', 'options' ),
 				'defaults'   => array( 'required' => 0, 'options' => '' ),
@@ -372,6 +376,8 @@ class AOL_Form_Field_Registry {
 		switch ( $prop ) {
 			case 'required':
 			case 'preselect':
+			case 'name_title_switch':
+			case 'middle_name_switch':
 				return ! empty( $value ) ? 1 : 0;
 			case 'height':
 			case 'limit':

@@ -248,7 +248,7 @@ class AOL_Single_Post_Template{
                 #aol-progress-bar{background-color: <?php echo $css_fg; ?>}
                 #aol-progress-counter{color: <?php echo $css_color; ?>}
             </style>
-            <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
+            <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data" method="post"  data-toggle="validator">
                 <?php
                     echo '<h3 class="aol-heading">'. esc_html_x('Apply Online', 'public', 'apply-online').'</h3>';
                     do_action('aol_before_form_fields', $post_id);
