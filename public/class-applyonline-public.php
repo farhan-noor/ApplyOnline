@@ -123,11 +123,6 @@ class Applyonline_Public {
             }
         }
         
-        //@todo: Use this method instead of aol_form_generator() function.
-        function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 0){
-            return aol_form_generator($fields, $fieldset, $prepend, $post_id);
-        }
-        
         /**
          * This function should be moved to the admin section.
          */
@@ -254,7 +249,7 @@ class AOL_Single_Post_Template{
                     do_action('aol_before_form_fields', $post_id);
                     
                     //Function returns sanitized data.
-                    echo aol_form_generator($fields, 0, '_aol_app_', $post_id);
+                    echo $this->aol_form_generator($fields, 0, 'aol_field_', $post_id);
                     do_action('aol_after_form_fields', $post_id);
                     $aol_button_attributes = apply_filters('aol_form_button_attributes', array('value' => esc_html__('Submit', 'apply-online'), 'class' => 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. get_option('aol_submit_button_classes')));
                     $aol_button_attributes = apply_filters('aol_form_button', $aol_button_attributes);//depricated in the favour of aol_form_button_attributes since 2.2.3.1
@@ -286,6 +281,174 @@ class AOL_Single_Post_Template{
             return apply_filters('aol_form', ob_get_clean(), $fields, $post_id);
         }
 
+        /**
+         * Application form generator.
+         * 
+         * @param type $fields
+         * @param int $fieldset
+         * @param type $prepend
+         * @param type $post_id
+         * @return string
+         */
+        public function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 0){
+            $form_output = NULL;
+            foreach($fields as $field):
+                //$value = isset($field['value']) ? $field['value'] : NULL;
+                $value = isset($field['val']) ? sanitize_textarea_field( $field['val'] ) : '';
+                $placeholder   = isset($field['placeholder']) ? 'placeholder="'.sanitize_text_field( $field['placeholder'] ).'"' : NULL;
+                $class         = isset($field['class']) ? esc_attr( $field['class'] ) : NULL;
+
+                //Used by Tracker add-on to display saved value.
+                //$value = apply_filters('aol_form_field_value', $value, $field['key'], $field['type'], $post_id);
+                $type = esc_attr($field['type']);
+
+                $field_key = sanitize_key($field['key']);
+
+                $required = $attributes = $wrapper_class = NULL;
+                if( isset( $field['required'] ) AND $field['required'] == '1' ){
+                    $required = '<span class="required-mark">*</span>';
+                    $attributes = 'required aria-required="true"';
+                    $class .= ' required';
+                    $wrapper_class = ' required';
+                }
+
+                $label = isset($field['label']) ? sanitize_text_field( $field['label'] ) : sanitize_text_field( str_replace('_',' ',$field['key']) );
+                $description = isset($field['description']) ? sanitize_text_field( $field['description'] ) : NULL;
+                $text = isset($field['text']) ? sanitize_textarea_field( $field['text'] ) : $description;
+                $style = (isset($field['height']) and (int)$field['height'] > 0) ? 'height:'.(int)$field['height'].'px' : NULL;
+                $title_list = NULL;
+                if( !empty($field['title_switch']) ){
+                    $title_list = '<select>';
+                    foreach(str_getcsv($field['title_list']) as $item){
+                        $title_list .="<option value='$item'>$item</option>";
+                    }
+                    $title_list .= '</select>';            
+                }
+
+                if(isset($field['limit']) AND !empty($field['limit'])){
+                    $limit = (int)$field['limit'];
+                    $limit_output = '<div class="the-count"><span class="current">'. strlen($value).'</span><span class="maximum">/'.$limit.'</span></div>';
+                } else {
+                    $limit = $limit_output = NULL;
+                }
+                if( in_array( $type, ['checkbox', 'radio'] ) ){
+                    $tag = 'fieldset';
+                    $label_tag = 'legend';
+                } else {
+                    $tag = 'div';
+                    $label_tag = 'label'; 
+                }
+                
+                $wrapper_start = '<'.$tag.' class="form-group aol-'.$type.$wrapper_class.'" data-field="'.$prepend.$field_key.'">'
+                               . '<'.$label_tag.' for="'.$prepend.$field_key.'">'.$required.$field['label'].'</'.$label_tag.'>';
+                $wrapper_end = '<small id="help'.$field_key.'" class="help-block">'.$description.'</small>'
+                             . '</'.$tag.'>';
+
+                switch ($type){
+                    case 'paragraph':
+                        //$field['description'] = empty($field['description']) ? $label : $field['description'];
+                        add_shortcode('link', 'aol_links_shortcode');
+                        $form_output .= $wrapper_start.'<div id="'.$field_key.'" class="'.$class.' aol-textbox" style="'.$style.'">'. nl2br($text).'</div>'.$wrapper_end;
+                        remove_shortcode('link');
+                        break;
+
+                    case 'date':
+                        $form_output .= $wrapper_start. '<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'" class="form-control datepicker '.$class.'" id="'.$prepend.$field_key.'" value="'.$value.'"  placeholder="'.esc_attr__('e.g.', 'apply-online').' '.current_time(get_option('date_format')).'" '.$attributes.'  aria-describedby="help'.$field_key.'" >'.$wrapper_end;
+                        break;
+
+                    case 'dropdown':
+                        $form_output .= $wrapper_start.'<div id="'.$field_key.'" ><select name="'.$prepend.$field_key.'" id="'.$prepend.$field_key.'" class="form-control '.$class.'" id="'.$prepend.$field_key.'" '.$attributes.' aria-describedby="help'.$field_key.'">';
+                        $form_output .= '<option value=""><i>'.esc_html__('Not Selected', 'apply-online').'</i></option>';
+                        foreach ($field['options'] as $key => $option) {
+                            $selected = ($option == $value) ? 'selected="selected"': NULL; 
+                            $form_output .= '<option class="" value="'.esc_attr($key).'" '.$selected.' >'. sanitize_text_field($option).' </option>';
+                        }
+                        $form_output .= '</select><small id="help_'.$field_key.'" class="help-block">'.$description.'</small></div></div>';
+                        break;
+
+                    case 'radio':
+                        $form_output .= $wrapper_start.'<div class="form-control aol-flex">';
+                        $i=0;
+                        $selection = !empty($field['preselect']) ? $field['preselect']  : ''; 
+                        foreach ($field['options'] as $key => $option) {
+                            $checked = NULL;
+                            if(empty($value) and ($i == 0 and $selection === '1' )) $checked = 'checked' ;
+                            elseif($option == $value) $checked = 'checked';
+                            $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'" class="aol-radio '.$field_key.' " value="'.$key.'" '.$checked.' > '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
+                            $i++;
+                        }
+                        $form_output .= '</div>'.$wrapper_end;
+                        break;
+
+                    case 'checkbox':
+                        $form_output .= $wrapper_start.'<div class="form-control aol-flex">';
+                        $i=0;
+                        foreach ($field['options'] as $key => $option) {
+                            $checked = NULL;
+                            if(!empty($value) AND in_array($option, $value)) $checked = 'checked';
+                            $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'[]" class="aol-checkbox '.$field_key.' " value="'.$key.'" '.$checked.'> '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
+                            $i++;
+                        }
+                        $form_output .= '</div>'.$wrapper_end;
+                        break;
+                        /*
+                    case 'separator':
+                        $is_multi_steps = get_option('aol_multistep');
+                        $hide_section = $back = $multistep_output = NULL;
+                        if($is_multi_steps){
+                            if($fieldset > 1) $back = '<button class="aol_multistep btn btn-default btn-previous pull-left" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button>';
+                            if($fieldset > 0){
+                                $hide_section   = 'style="display:none;"';
+                            }
+                        }
+
+                        $multistep_output = $back.'<button class="aol_multistep btn btn-default btn-next pull-right" data-load="next">'.esc_html__('Next', 'apply-online').' <span class="dashicons dashicons-arrow-right-alt2"></span></button>';
+                        if($fieldset > 0)   $form_output.=  $multistep_output.'</fieldset>';
+
+                        $form_output.=  "<fieldset $hide_section><legend>".sanitize_text_field($label).'</legend>';
+                        $form_output.=  '<small id="help'.$field_key.'" class="section-info">'.sanitize_text_field($field['description']).'</small>';
+                        $fieldset++;
+                        break;
+                         * 
+                         */
+                    case 'separator':
+                        if($fieldset == 1) $form_output .=  '</fieldset>';
+                        $form_output .= '<fieldset><legend>'.$label.'</legend>';
+                        $form_output .= '<small id="help_'.$field_key.'" class="section-info">'.$description.'</small>';
+                        $fieldset = 1;
+                        break;
+
+                    case 'hidden':
+                        $form_output .= '<input type="'.$type.'" '.$placeholder.' name="'.$prepend.$field_key.'" class="form-control '.$class.'" id="'.$field_key.'" value="'.$value.'" '.$attributes.'>';
+                        break;
+
+                    case 'text_area':
+                        $form_output .= $wrapper_start. '<textarea name="'.$prepend.$field_key.'" '.$placeholder.' class="form-control '.$class.'" id="'.$prepend.$field_key.'" '.$attributes.' aria-describedby="help'.$field_key.'" maxlength="'.$limit.'">'. $value.'</textarea>'.$limit_output.$wrapper_end;
+                        break;
+
+                    case 'name':
+                        $form_output .= $wrapper_start.'<div class="aol-flex aol-name-field">';
+                        $form_output .=$title_list;
+                        $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[first]" class="form-control'.$class.'" id="'.$prepend.$field_key.'-first" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="First">';
+                        if( isset( $field['middle_name_switch'] ) AND $field['middle_name_switch'] == 1 ) $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[middle]" class="form-control aol-name '.$class.'" id="'.$prepend.$field_key.'-middle" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="Middle">';
+                        $form_output .='<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'[last]" class="form-control aol-name '.$class.'" id="'.$prepend.$field_key.'-last" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.' placeholder="Last">';
+                        $form_output .='</div>'.$wrapper_end;
+                        break;
+
+                    //case 'text':
+                    //case 'email':
+                    //case 'file':
+                    //case 'number':
+                    default:
+                        $form_output .= $wrapper_start. '<input type="'.$type.'" '.$placeholder.' name="'.$prepend.$field_key.'" class="form-control '.$class.'" id="'.$prepend.$field_key.'" value="'. $value.'" maxlength="'.$limit.'" '.$attributes.'>'.$limit_output.$wrapper_end;
+                        break;
+                }
+            endforeach;
+            //if($fieldset > 0) $form_output.=  '<button class="aol_multistep btn btn-default btn-previous pull-left '.get_option('aol_multistep_button_classes').'" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button></fieldset>';
+            if($fieldset == 1) $form_output .= '</fieldset>';
+
+            return $form_output;//ob_get_clean();
+        }
         public function ad_features($post_id = 0, $output = 'table') {
             //Get current post object on SINGLE Template file.
             global $post;
@@ -379,6 +542,25 @@ class Applyonline_Shortcodes{
         add_shortcode( 'aol_features', array($this, 'aol_features') );
     }
     
+    function aol_select_filter($label, $name, array $options){
+        ob_start();
+        ?>
+        <div class="aol-field">
+            <label for="<?php echo $name; ?>"><?php echo htmlspecialchars($label); ?></label>
+
+            <select id="<?php echo $name; ?>" name="<?php echo $name; ?>">
+                <option>All</option>
+                <?php foreach ($options as $value => $text): ?>
+                    <option value="<?php echo htmlspecialchars($value); ?>">
+                        <?php echo htmlspecialchars($text); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
         /**
          * Shortcode Generator
          * @param type $atts
@@ -388,11 +570,11 @@ class Applyonline_Shortcodes{
             $archive_wraper_classes = apply_filters('aol_archive_wrapper_classes', array('aol-ad-outer-wrapper'));
             $wraper_classes = apply_filters('aol_ad_wrapper_classes', array('aol-ad-inner-wrapper'));
             //$title_wrapper = apply_filters('aol_ad_title_wrapper', 'div');
-            $title_classes = apply_filters('aol_ad_title_wrapper_classes', array('panel-heading'));
-            $body_classes = apply_filters('aol_ad_body_wrapper_classes', array('panel-body'));
+            $title_classes = apply_filters('aol_ad_title_wrapper_classes', array('aol-panel-heading'));
+            $body_classes = apply_filters('aol_ad_body_wrapper_classes', array('aol-panel-body'));
             $thumb_wrapper = apply_filters('aol_ad_thumb_wrapper', 'div');
             $thumb_classes= apply_filters('aol_ad_thumb_classes', array('aol-thumbnail', 'pull-md-left', 'center-sm-block'));
-            $footer_classes = apply_filters('aol_ad_footer_wrapper_classes', array('panel-footer'));
+            $footer_classes = apply_filters('aol_ad_footer_wrapper_classes', array('aol-panel-footer'));
             
             $order = apply_filters('aol_grid_element_order', array('title', 'body_start', 'meta', 'thumbnail', 'excerpt', 'body_close', 'footer'));
             $a = shortcode_atts( array(
@@ -446,20 +628,25 @@ class Applyonline_Shortcodes{
             ob_start();
             do_action('aol_before_shortcode', $a, $filters);
             if(!(empty($filters) OR $a['filter'] == 'no' )){
-                    echo '<div class="well well-lg">'; //Started well
-                        echo '<form method="post" class="form-horizontal" id="aol_'.esc_attr($a['type']).'_form" action="#aol_'.esc_attr($a['type']).'_form">';
-                            echo '<div class="form-group">'; //1st row Started'
-                            //$col_count = $filter_count < 4 ? 12/($filter_count+1) : 3;
-                            $col_count = floor(12/($filter_count));
-                            //$offset = in_array($col_count, array(5,7,9)) ? 'aol-md-offset-1' : NULL;
-                            //elseif($col_count == 5) 
-                            $i = 0;
-                            foreach ($filters as $key => $filter){
-                                //Sanitizing Key beforehand.
-                                $key = sanitize_key($key);
-                                //$Fclass = ((isset($_REQUEST['filter']) AND $_REQUEST['filter']) == 'aol_ad_'. $key) ? 'selected' : NULL;
-                                echo '<div class="aol-md-'.(int)$col_count.'">';
-                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'apply-online'), esc_html__($filter['plural'], 'apply-online') ).'</option>';
+                echo '<div class="aol-panel aol-job-filter">'; //Started well
+                    echo '<form method="post" class="form-horizontal aol-panel-body" id="aol_'.esc_attr($a['type']).'_form" action="#aol_'.esc_attr($a['type']).'_form">';
+                        echo '<div class="aol-filter-row">'; //1st row Started'
+                        $i = 0;
+                        foreach ($filters as $key => $filter){
+                            //Sanitizing Key beforehand.
+                            echo '<div class="aol-field">';
+                                /*
+                                    $args = array(
+                                        'taxonomy' => 'aol_ad_'. $key,
+                                        'hide_empty' => true,
+                                        'fields' => 'id=>name'
+                                    );
+                                    $terms = get_terms($args);
+                                echo $this->aol_select_filter($filter['plural'], $key, $terms);
+                                 * 
+                                 */
+                                echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-select">';
+                                    echo '<option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'apply-online'), esc_html__($filter['plural'], 'apply-online') ).'</option>';
                                     $args = array(
                                         'taxonomy' => 'aol_ad_'. $key,
                                         'hide_empty' => true,
@@ -467,18 +654,19 @@ class Applyonline_Shortcodes{
                                     $terms = get_terms($args);
                                     foreach ($terms as $term){
                                         $selected = (isset($_REQUEST[$key]) AND $term->term_id == (int)$_REQUEST[$key]) ? 'selected="selected"': NULL;
-                                        echo '<option value="'.(int)$term->term_id.'" '.$selected.'>'.sanitize_text_field($term->name).'</option>';
+                                        echo '<option value="'.(int)$term->term_id.'" '.$selected.'>'.esc_html__($term->name, 'apply-online').'</option>';
                                     }
-                                    echo '</select>'; 
-                                echo '</div>';
-                                $i++;
-                            }
-                            echo '</div>'; //Ended 1st row
-                        echo '<div class="form-group">'; //2nd row started
-                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'apply-online').'" value="'. esc_attr($search_keyword).'"></div>';
-                        echo '<div class="aol-md-2"><button class="fusion-button button btn btn-info btn-block aol-filter-button">'.esc_html__('Filter', 'apply-online').'</button></div>';
-                        echo '</div></form>'; //2nd row closed, form closed 
-                    echo '</div>'; //Ended Well
+                                echo '</select>'; 
+                            echo '</div>';
+                            $i++;
+                        }
+                        echo '</div>'; //Ended 1st row
+                        
+                    echo '<div class="aol-search-row">'; //2nd row started
+                    echo '<div class="aol-field"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'apply-online').'" value="'. esc_attr($search_keyword).'"></div>';
+                    echo '<button class="aol-btn aol-btn-search">'.esc_html__('Filter', 'apply-online').'</button>';
+                    echo '</div></form>'; //2nd row closed, form closed 
+                echo '</div>'; //Ended Well
             }
             if(!empty($posts)):
                 if($a['display'] == 'list') echo "<$lstyle>";
@@ -486,7 +674,7 @@ class Applyonline_Shortcodes{
                 echo '<div class="'. esc_attr(implode(' ', $archive_wraper_classes)).'">';
                 $post_count = 0;
                 foreach($posts as $post): setup_postdata($post);
-                    $wrapper_inner_classes = apply_filters('aol_ad_inner_wrapper_classes', array('panel', 'panel-default'), $post);
+                    $wrapper_inner_classes = apply_filters('aol_ad_inner_wrapper_classes', array('aol-panel', 'aol-panel-default'), $post);
                     /* Getting Post Status*/
                     $timestamp = (int)get_post_meta($post->ID, '_aol_ad_closing_date', true);
                     $timestamp = apply_filters('aol_ad_closing_date', $timestamp, $post);
@@ -527,7 +715,7 @@ class Applyonline_Shortcodes{
                                             'readmore' => sprintf(
                                                     '<a href="%s" ><button class="%s">%s</button></a>',
                                                     get_the_permalink($post),
-                                                    'fusion-button button read-more btn btn-info',
+                                                    'aol-btn',
                                                     get_option( 'aol_readmore_button', __('Read More', 'apply-online') )
                                                     )
                                             );

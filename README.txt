@@ -112,9 +112,10 @@ Consent or terms & conditions field.
 List view & horizontal view options for Checkbox & Radio button fields.
 
 = 2.7.1 =
-New: Name form field in the application form builder in the admin panel and on the public side.
+New: Name field in the application form builder in the admin panel and on the public side.
 Fixed: PHP Warnings during application form processing & saving.
 Fixed: Notify Email checkbox restored in application form builder.
+Fixed: CSS.
 
 = 2.7 =
 New: Application form builder v2 replacing legacy form builder.

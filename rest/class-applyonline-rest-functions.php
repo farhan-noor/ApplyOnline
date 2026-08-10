@@ -230,7 +230,6 @@ class Applyonline_Rest_Functions{
 
                     default;
                     $form_data[$key] = $app_data[$key] = sanitize_text_field($form_data[$key]);
-                        
                 endswitch;
 
                 //normalizing path & sanitizing data before input.
