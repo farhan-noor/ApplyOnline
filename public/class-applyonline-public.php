@@ -75,7 +75,7 @@ class Applyonline_Public {
                 
                 //wp_enqueue_style( 'dashicons' );
                 wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-public-min.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -249,7 +249,7 @@ class AOL_Single_Post_Template{
                     do_action('aol_before_form_fields', $post_id);
                     
                     //Function returns sanitized data.
-                    echo $this->aol_form_generator($fields, 0, 'aol_field_', $post_id);
+                    echo $this->aol_form_generator($fields, NULL, $post_id);
                     do_action('aol_after_form_fields', $post_id);
                     $aol_button_attributes = apply_filters('aol_form_button_attributes', array('value' => esc_html__('Submit', 'apply-online'), 'class' => 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. get_option('aol_submit_button_classes')));
                     $aol_button_attributes = apply_filters('aol_form_button', $aol_button_attributes);//depricated in the favour of aol_form_button_attributes since 2.2.3.1
@@ -272,11 +272,12 @@ class AOL_Single_Post_Template{
                         </div>                    
                     </div>
                 <?php endif; ?>
+                <div id="aol_form_status"></div>
                 <?php do_action('aol_before_submit_button', $post_id); ?> 
                 <?php aol_form_button(); ?>
                 <?php do_action('aol_after_submit_button', $post_id); ?>
             </form>
-            <p id="aol_form_status"></p>
+            <div id="aol_success_alert"></div>
         <?php
             return apply_filters('aol_form', ob_get_clean(), $fields, $post_id);
         }
@@ -290,8 +291,9 @@ class AOL_Single_Post_Template{
          * @param type $post_id
          * @return string
          */
-        public function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 0){
+        public function aol_form_generator($fields, $prepend = NULL, $post_id = 0){
             $form_output = NULL;
+            $fieldset  = 0;
             foreach($fields as $field):
                 //$value = isset($field['value']) ? $field['value'] : NULL;
                 $value = isset($field['val']) ? sanitize_textarea_field( $field['val'] ) : '';
@@ -331,6 +333,7 @@ class AOL_Single_Post_Template{
                 } else {
                     $limit = $limit_output = NULL;
                 }
+                /*
                 if( in_array( $type, ['checkbox', 'radio'] ) ){
                     $tag = 'fieldset';
                     $label_tag = 'legend';
@@ -338,7 +341,9 @@ class AOL_Single_Post_Template{
                     $tag = 'div';
                     $label_tag = 'label'; 
                 }
-                
+                 */
+                $tag = 'div';
+                $label_tag = 'label'; 
                 $wrapper_start = '<'.$tag.' class="form-group aol-'.$type.$wrapper_class.'" data-field="'.$prepend.$field_key.'">'
                                . '<'.$label_tag.' for="'.$prepend.$field_key.'">'.$required.$field['label'].'</'.$label_tag.'>';
                 $wrapper_end = '<small id="help'.$field_key.'" class="help-block">'.$description.'</small>'
@@ -391,26 +396,7 @@ class AOL_Single_Post_Template{
                         }
                         $form_output .= '</div>'.$wrapper_end;
                         break;
-                        /*
-                    case 'separator':
-                        $is_multi_steps = get_option('aol_multistep');
-                        $hide_section = $back = $multistep_output = NULL;
-                        if($is_multi_steps){
-                            if($fieldset > 1) $back = '<button class="aol_multistep btn btn-default btn-previous pull-left" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button>';
-                            if($fieldset > 0){
-                                $hide_section   = 'style="display:none;"';
-                            }
-                        }
-
-                        $multistep_output = $back.'<button class="aol_multistep btn btn-default btn-next pull-right" data-load="next">'.esc_html__('Next', 'apply-online').' <span class="dashicons dashicons-arrow-right-alt2"></span></button>';
-                        if($fieldset > 0)   $form_output.=  $multistep_output.'</fieldset>';
-
-                        $form_output.=  "<fieldset $hide_section><legend>".sanitize_text_field($label).'</legend>';
-                        $form_output.=  '<small id="help'.$field_key.'" class="section-info">'.sanitize_text_field($field['description']).'</small>';
-                        $fieldset++;
-                        break;
-                         * 
-                         */
+                        
                     case 'separator':
                         if($fieldset == 1) $form_output .=  '</fieldset>';
                         $form_output .= '<fieldset><legend>'.$label.'</legend>';
@@ -444,7 +430,6 @@ class AOL_Single_Post_Template{
                         break;
                 }
             endforeach;
-            //if($fieldset > 0) $form_output.=  '<button class="aol_multistep btn btn-default btn-previous pull-left '.get_option('aol_multistep_button_classes').'" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button></fieldset>';
             if($fieldset == 1) $form_output .= '</fieldset>';
 
             return $form_output;//ob_get_clean();

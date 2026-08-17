@@ -458,23 +458,28 @@ function aol_application_data($post){
     return $data;
 }
 
-function aol_application_data_v2($post, $keys){
-    $meta = get_post_meta($post->ID, "ad_transcript", TRUE);
-    foreach($meta as $key => $val){
-        $meta[$key] = maybe_unserialize(maybe_unserialize($val));
+    function aol_remove_app_prefix( &$value ){
+        if( substr($value, 0, 9 ) == '_aol_app_' ){
+            $value = substr( $value, 9 );
+        }
     }
-    
-    $keys_order = empty( $meta['_aol_fields_order'] ) ? array_keys ($meta) : $meta['_aol_fields_order'];
+
+function aol_application_data_v2($post, $keys){
+    $fields = get_post_meta($post->ID, "ad_transcript", TRUE);
+
+    foreach($fields as $key => $val){
+        $meta[$key] = maybe_unserialize($val);
+    }
 
     $data = [];
-    foreach ( $keys_order as $key ):
-        if ( substr ( $key, 0, 9 ) == '_aol_app_' ){
+    foreach ( $fields as $key => $field ):
+        //if ( substr ( $key, 0, 9 ) == '_aol_app_' ){
 
             $key = sanitize_key($key);
             $val = get_post_meta ( $post->ID, $key, true );
             
             //check field type.
-            switch ($meta[$key]['type']){
+            switch ($field['type']){
                 case 'file':
                     $val = empty($val) ? NULL: aol_crypt($val['file']);
                     break;
@@ -488,7 +493,8 @@ function aol_application_data_v2($post, $keys){
                     break;
                 
                 case 'name':
-                    $val = $val['first'].' - '.$val['middle'].' - '.$val['last'];
+                    $middle = empty($val['middle']) ? NULL : ' - '.$val['middle'];
+                    $val = $val['first'].$middle.' - '.$val['last'];
                     break;
                 
                 default :
@@ -498,7 +504,7 @@ function aol_application_data_v2($post, $keys){
                 'label' => isset($meta[$key]['label']) ? $meta[$key]['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
                 'value' => $val,
                 'type' => $meta[$key]['type']);
-        }
+        //}
     endforeach;
     return $data;
 }

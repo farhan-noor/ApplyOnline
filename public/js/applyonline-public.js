@@ -116,15 +116,15 @@ async function aolSubmitForm( event ) {
     //const submitButton = document.getElementById('aol_app_submit_button');
     const submitButton = document.querySelectorAll('.aol-form-button');
     const statusBar = document.getElementById('aol_form_status');
+    const successAlert = document.getElementById('aol_success_alert');
     const aolForm = event.target;
     
     submitButton.forEach( (button, index, array) => {
         //button.setAttribute('disabled', 'disabled');
         button.disabled = true;
     } );
-    statusBar.classList.remove('alert-danger'); //May be trying again after errors.
+    statusBar.classList.remove('alert', 'alert-danger'); //May be trying again after errors.
     statusBar.classList.add('alert');
-    statusBar.classList.add('alert-warning');
     statusBar.innerHTML = '<img src="'+aol_public.url+'/images/loading.gif" />';
     
     const formData = new FormData(document.getElementById("aol_app_form"));
@@ -142,9 +142,9 @@ async function aolSubmitForm( event ) {
     let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support.';
     
     if( response.status == 200 ){
-        statusBar.classList.remove('alert-warning');
-        statusBar.classList.add('alert-info');
-        statusBar.innerHTML = message;
+        statusBar.innerHTML = '';
+        successAlert.classList.add('alert', 'alert-info');
+        successAlert.innerHTML = message;
         if(data['hide_form'] == true){
             aolForm.classList.toggle('hideout');
         } //Show a sliding effecnt.
@@ -155,8 +155,7 @@ async function aolSubmitForm( event ) {
             window.location.href = stripslashes(page);
         }
     } else {
-        statusBar.classList.remove('alert-warning');
-        statusBar.classList.add('alert-danger');
+        statusBar.classList.add('alert', 'alert-danger');
         statusBar.innerHTML = message;
     }
     submitButton.forEach( (button, index, array) => {
