@@ -56,6 +56,15 @@ class Applyonline {
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
+        
+        /**
+         * The DB version of the plugin.
+         * 
+         * @since   2.7.1
+         * @access  protected
+         * @var     string $version The current version of the DB.
+         */
+        protected $db_version;
 
 	/**
 	 * Define the core functionality of the plugin.

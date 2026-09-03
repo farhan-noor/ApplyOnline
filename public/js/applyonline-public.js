@@ -147,7 +147,7 @@ async function aolSubmitForm( event ) {
         successAlert.innerHTML = message;
         if(data['hide_form'] == true){
             aolForm.classList.toggle('hideout');
-        } //Show a sliding effecnt.
+        } //Show a sliding effect.
 
         //Divert to thank you page. 
         if(data.divert == true){

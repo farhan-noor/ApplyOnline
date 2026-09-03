@@ -42,7 +42,7 @@ class Applyonline_Updater{
 	 * @access   private
 	 * @var      string    $version    The version saved in the database.
 	 */
-        protected $db_version;
+        protected $aol_version;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -54,7 +54,8 @@ class Applyonline_Updater{
         function __construct( $plugin_name, $version ) {
             $this->plugin_name = $plugin_name;
             $this->plugin_version = $version;
-            $this->db_version = get_option('aol_version', $version);
+            $this->aol_version = get_option('aol_version', $version);
+            add_action( 'aol_transcript_migration_hook', [$this, 'fix_transcript_fields_order_and_format'] );
         }
 
         function get_version(){
@@ -62,7 +63,7 @@ class Applyonline_Updater{
         }
 
         function after_plugin_update(){
-            $saved_version = $this->db_version;
+            $saved_version = $this->aol_version;
             $version = $this->plugin_version;
             $done = FALSE;
             
@@ -87,11 +88,103 @@ class Applyonline_Updater{
                 $done = TRUE;
             }
             
+            if( version_compare( '2.7.1', $saved_version ) ){
+                $db_version = get_option( 'aol_db_version', '0.0.0' );
+                //define( 'MY_PLUGIN_TRANSCRIPT_CRON_HOOK', 'aol_transcript_migration_hook' );
+
+                // Database is already updated.
+                if ( version_compare( $db_version, AOL_DB_VERSION, '>=' ) ) {
+                    return;
+                }
+
+                //Start migration.
+                update_option(
+                    'aol_transcript_migration_status',
+                    'pending'
+                );
+
+                //Reset progress only when a new migration starts.
+                if ( false === get_option( 'aol_transcript_last_meta_id', false ) ) {
+                    update_option( 'aol_transcript_last_meta_id', 0 );
+                }
+
+                //Schedule background task.
+                if ( !wp_next_scheduled( MY_PLUGIN_TRANSCRIPT_CRON_HOOK ) ) {
+                    wp_schedule_single_event( time() + 10, 'aol_transcript_migration_hook' );
+                }
+            }
+
             if( $done === TRUE ){
                 update_option('aol_version', $this->get_version(), TRUE);
             }
         }
         
+        /**
+         * This method migrates ad_transcript serialized metadata to JSON _transcript metadata. ad_transcript field is kept for backup.
+         * @global type $wpdb
+         */
+        function fix_transcript_fields_order_and_format(){
+            global $wpdb;
+            $qry = "SELECT post_id, meta_value FROM $wpdb->prefix"."posts
+                    JOIN $wpdb->prefix"."postmeta on ID=post_id 
+                    WHERE post_type = 'aol_application' 
+                    AND meta_key = 'ad_transcript';";
+            $result = $wpdb->get_results($qry);
+            $posts = $new = [];
+            foreach($result as $row){
+                //preserve existing ad_transcript as x_transcript.
+                //update_post_meta($row->post_id, 'x_transcript', $row->meta_value);
+
+                $transcript = maybe_unserialize( $row->meta_value );
+
+                //Find old applications transcript where aol_fields_order is set.
+                if( !empty($transcript['_aol_fields_order']) ){
+                    //$posts[] = $row->post_id;
+                    $keys = maybe_unserialize( maybe_unserialize( $transcript['_aol_fields_order'] ));
+                    $new = [];
+                    
+                    //Create new transcript with keys from _aol_fields_order and values from ad_transcript
+                    foreach($keys as $key){
+                        $new[$key] = maybe_unserialize($transcript[$key]);
+                    }
+
+                    //Save new transcript in JSON format.
+                    update_post_meta( $row->post_id, '_transcript', json_encode( $new ) );
+                } else {
+                    $new = [];
+
+                    //Save rest of the new transcripts in JSON format.
+                    update_post_meta( $row->post_id, '_transcript', json_encode( $transcript ) );
+                }
+
+                //echo $row->post_id.'</br>';
+                //echo '<pre>'; print_r($new); echo '</pre>';
+                //die();
+            /*
+            $insert = '';
+            foreach($new as $key => $val){
+                $period = $key === array_key_last($new) ? ';' : ', ';
+                $insert .= "($key, 'transcript', $val)$period";
+             */
+            }
+            /*
+            //preserve existing ad_transcript as x_transcript.
+            $qry_update = "UPDATE $wpdb->prefix"."postmeta
+                        SET meta_key = 'x_transcript'
+                        WHERE post_id IN (". implode(',', $posts).")
+                        AND meta_key = 'ad_transcript'";
+
+            $qry_insert = "INSERT INTO $wpdb->prefix"."postmeta(post_id, meta_key, meta_value) 
+                            VALUES
+                            $insert
+                            ";
+            //$wpdb->query($qry_insert);
+            die($qry_insert);
+            //$wpdb->query();
+        * 
+        */
+        }
+
         function fix_filters(){
                $default_filters = [
                     'category' => array('singular' => esc_html__('Category', 'apply-online'), 'plural' => esc_html__('Categories', 'apply-online')),

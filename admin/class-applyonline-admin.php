@@ -568,29 +568,29 @@ class Applyonline_Admin{
             add_action( 'init', [$this, 'custom_statuses'], 1 );
             //add_action( 'views_edit-aol_application', [$this, 'status_filters'] ); 
             //Add Application data to the Application editor. 
-            add_action ( 'edit_form_after_title', array ( $this, 'aol_application_post_editor' ) );
-            add_filter('post_row_actions',array($this, 'aol_post_row_actions'), 10, 2);
-            add_action('admin_init', array($this, 'alter_metaboxes_on_application_page'));
-            add_action( 'add_meta_boxes', array($this, 'aol_meta_boxes'),1 );
+            add_action ( 'edit_form_after_title', [$this, 'aol_application_post_editor'] );
+            add_filter('post_row_actions', [$this, 'aol_post_row_actions'], 10, 2 );
+            add_action('admin_init', [$this, 'alter_metaboxes_on_application_page'] );
+            add_action( 'add_meta_boxes', [$this, 'aol_meta_boxes'],1 );
             add_filter( 'wp_insert_post_data', [$this, 'save_application'], 10, 2 );
-            add_action('init', array($this, 'application_print'));
-            add_action('manage_posts_extra_tablenav', array($this, 'applications_table_filter') );
+            add_action('init', [$this, 'application_print'] );
+            add_action('manage_posts_extra_tablenav', [$this, 'applications_table_filter'] );
 
             /*Preview or Quickview an application.*/
-            add_action( 'admin_action_aol_modal_box', array ( $this, 'application_quick_view') );
+            add_action( 'admin_action_aol_modal_box', [$this, 'application_quick_view'] );
 
-            add_filter( 'post_date_column_status', array($this, 'application_date_column'), 10, 2);
+            add_filter( 'post_date_column_status', [$this, 'application_date_column'], 10, 2);
 
             // Hook - Applicant Listing - Column Name
-            add_filter( 'manage_edit-aol_application_columns', array ( $this, 'applicants_list_columns' ) );
+            add_filter( 'manage_edit-aol_application_columns', [$this, 'applicants_list_columns'] );
 
             //Hook - Applicant Listing - Column Value
-            add_action( 'manage_aol_application_posts_custom_column', array ( $this, 'applicants_list_columns_value' ), 10, 2 ); 
+            add_action( 'manage_aol_application_posts_custom_column', [$this, 'applicants_list_columns_value'], 10, 2 ); 
 
             //Filter Applications based on parent.
-            add_action( 'pre_get_posts', array($this, 'applications_filter') );
+            add_action( 'pre_get_posts', [$this, 'applications_filter'] );
             
-            add_filter( 'bulk_actions-edit-aol_application', array($this, 'custom_bulk_actions') );
+            add_filter( 'bulk_actions-edit-aol_application', [$this, 'custom_bulk_actions'] );
             
             //Obselete Since core 2.6.7.3
             //add_filter( 'handle_bulk_actions-edit-aol_application', array($this, 'my_bulk_action_handler'), 10, 3 );            
@@ -687,7 +687,6 @@ class Applyonline_Admin{
          * @return  void
          */
         public function aol_application_post_editor ($post){
-            //global $post;
             if( $post->post_type != 'aol_application' ){
                 return;
             }
@@ -915,18 +914,9 @@ class Applyonline_Admin{
                     if($name === FALSE):
                         $applicant_name = '<i>'.esc_html__('Undefined', 'apply-online').'</i>';
                     else:
-                        //$applicant = apply_filters( 'aol_applicants_table_name_column', get_post_meta( $post_id, $keys[ $name ], TRUE ), $post_id, $keys[ $name ] );
-                        //if(is_object($applicant)) $applicant = NULL;
-                        //elseif(is_array($applicant))    $applicant = implode(',', $applicant);
-                        $applicant = get_post_meta($post_id, "_aol_app_$name", TRUE);
-                    /*
-                        $applicant_name = sprintf( 
-                                '<a href="%s">%s</a>', 
-                                esc_url( add_query_arg( array ( 'post' => $post_id, 'action' => 'edit' ), 'post.php' ) ), 
-                                esc_html( $applicant )
-                        );
-                     * 
-                     */
+                        $applicant = get_post_meta($post_id, $name, TRUE);
+                        //Fallback support for versions < 2.7.1
+                        $applicant = empty($applicant) ? get_post_meta($post_id, "_aol_app_$name", TRUE) : $applicant;
                     endif;
                     echo sanitize_text_field( is_array($applicant) ? implode(' ', $applicant) : $applicant );
                     break;

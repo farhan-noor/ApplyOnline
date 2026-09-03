@@ -4,7 +4,7 @@ Donate link: https://wpreloaded.com/shop/
 Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 2.7.1
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -112,10 +112,12 @@ Consent or terms & conditions field.
 List view & horizontal view options for Checkbox & Radio button fields.
 
 = 2.7.1 =
-New: Name field in the application form builder in the admin panel and on the public side.
+New: Name field in the application form builder and on the public side.
 Fixed: PHP Warnings during application form processing & saving.
 Fixed: Notify Email checkbox restored in application form builder.
-Fixed: CSS.
+Fixed: Required attribute for radio buttons in the application form.
+Fixed: CSS upgraded to BS 3.5.8
+
 
 = 2.7 =
 New: Application form builder v2 replacing legacy form builder.

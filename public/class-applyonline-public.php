@@ -379,7 +379,7 @@ class AOL_Single_Post_Template{
                             $checked = NULL;
                             if(empty($value) and ($i == 0 and $selection === '1' )) $checked = 'checked' ;
                             elseif($option == $value) $checked = 'checked';
-                            $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'" class="aol-radio '.$field_key.' " value="'.$key.'" '.$checked.' > '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
+                            $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'" class="aol-radio '.$field_key.' " value="'.$key.'" '.$checked.' '.$attributes.' > '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
                             $i++;
                         }
                         $form_output .= '</div>'.$wrapper_end;

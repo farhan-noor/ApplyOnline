@@ -465,19 +465,19 @@ function aol_application_data($post){
     }
 
 function aol_application_data_v2($post, $keys){
-    $fields = get_post_meta($post->ID, "ad_transcript", TRUE);
-
-    foreach($fields as $key => $val){
-        $meta[$key] = maybe_unserialize($val);
-    }
-
+    $transcript = json_decode( get_post_meta($post->ID, "_transcript", TRUE) );
+    
     $data = [];
-    foreach ( $fields as $key => $field ):
+    //$app_data = get_post_meta( $post->ID, $key, true );
+    
+    foreach ( $transcript as $key => $field ):
+        //Support for previous versions
+        //if( $key == '_aol_fields_order' ) continue;
+        
         //if ( substr ( $key, 0, 9 ) == '_aol_app_' ){
+            //$field = maybe_unserialize($field);
+            $val = get_post_meta( $post->ID, $key, true );
 
-            $key = sanitize_key($key);
-            $val = get_post_meta ( $post->ID, $key, true );
-            
             //check field type.
             switch ($field['type']){
                 case 'file':
@@ -487,26 +487,32 @@ function aol_application_data_v2($post, $keys){
                 case 'checkbox':
                     $val = empty($val) ? NULL: implode(', ', $val);
                     break;
-                
+
                 case 'paragraph':
-                    $val = empty($val) ? $meta[$key]['text'] : $val;
+                    //$val = empty($val) ? $meta[$key]['text'] : $val;
+                    $val = empty($val) ? $field['text'] : $val;
                     break;
-                
+
                 case 'name':
                     $middle = empty($val['middle']) ? NULL : ' - '.$val['middle'];
                     $val = $val['first'].$middle.' - '.$val['last'];
                     break;
-                
+
                 default :
                     $val  = empty($val) ? NULL: $val;
             }
             $data[] = array(
-                'label' => isset($meta[$key]['label']) ? $meta[$key]['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
+                'label' => isset($field['label']) ? $field['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
                 'value' => $val,
-                'type' => $meta[$key]['type']);
+                'type' => $field['type']);
         //}
     endforeach;
     return $data;
+}
+
+function aol_name_field($val){
+    $middle = empty($val['middle']) ? NULL : ' - '.$val['middle'];
+    return $val['first'].$middle.' - '.$val['last'];
 }
 
 function aol_application_table($post, $classes = 'aol-table widefat striped'){

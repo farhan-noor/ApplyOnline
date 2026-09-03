@@ -49,7 +49,6 @@ class Applyonline_Rest_Functions{
 
             /*Initialixing Variables*/
             //$errors = new WP_Error();
-
             $uploads = array();
             $user = get_userdata(get_current_user_id());
 
@@ -75,7 +74,7 @@ class Applyonline_Rest_Functions{
                 $max_upload_size = $upload_size*1048576; //Multiply by KBs
                 
                 if($max_upload_size < $val['size']){
-                        $errors->add('max_size', sprintf(esc_html__( '%s is oversized. Must be under %s MB', 'apply-online' ), $val['name'] , $upload_size));
+                    $errors->add('max_size', sprintf(esc_html__( '%s is oversized. Must be under %s MB', 'apply-online' ), $val['name'] , $upload_size));
                 }
 
                 /* Check File Size */
@@ -86,12 +85,12 @@ class Applyonline_Rest_Functions{
                 $errors = apply_filters('aol_before_file_upload_errors', $errors);
                 if(empty($errors->errors)){
                     do_action('aol_before_file_upload', $key, $val, $post);
-                                        
+
                     add_filter('upload_dir', array($this, 'upload_path')); //Change upload path.
                     $movefile = wp_handle_upload( $val, $upload_overrides );
                     if ( $movefile && ! isset( $movefile['error'] ) ) {
                         $uploads[$key] = $movefile;
-                        $uploads[$key]['name'] = $val['name'];
+                        //$uploads[$key]['name'] = $val['name'];
                         //update_user_meta(get_current_user_id(), $key, $movefile['url'] );
                     } else {
                         /**
@@ -207,6 +206,7 @@ class Applyonline_Rest_Functions{
             //$error_messages = array_merge($error_messages, $upload_error_messages);
             $error_messages = $errors->get_error_messages();
 
+            $error_html = NULL;
             if( !empty( $error_messages ) ){
                 $error_html .= '<ol class="aol-alert-list"><li>';
                 $error_html .= implode('</li><li>', $error_messages);
@@ -243,6 +243,10 @@ class Applyonline_Rest_Functions{
                     case 'text_area';
                     $form_data[$key] = $app_data[$key]= sanitize_textarea_field($form_data[$key]);
                     break;
+                
+                    case 'file';
+                    $form_data[$key] = $app_data[$key]= sanitize_textarea_field($_FILES[$key]);
+                    break;
 
                     default;
                     $form_data[$key] = $app_data[$key] = sanitize_text_field($form_data[$key]);
@@ -262,9 +266,16 @@ class Applyonline_Rest_Functions{
 
             if(isset($this->uploads)){
                 foreach($this->uploads as $name => $file){
+                    /*
                     //FILTER_SANITIZE_URL convert french file names to enlgish file names. 
-                    $args = array('file'=> array('filter' => FILTER_SANITIZE_STRING, 'flags'), 'url' => FILTER_SANITIZE_STRING, 'type' => FILTER_SANITIZE_STRING, 'name' => FILTER_SANITIZE_STRING);
-                    $app_data[sanitize_key($name)] = filter_var_array($file, $args);
+                    $args = array(
+                        'file'=> ['filter' => FILTER_SANITIZE_STRING, 'flags'],
+                        'url' => FILTER_SANITIZE_URL, 
+                        'type' => FILTER_SANITIZE_STRING, 
+                        'name' => FILTER_SANITIZE_STRING
+                        );
+                     */
+                    $app_data[$name] = $file;
                 }
             }
 
