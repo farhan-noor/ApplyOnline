@@ -71,7 +71,7 @@ class Applyonline_Rest{
             register_rest_route( $this->namespace, '/form', array(
                 'methods' => 'POST',
                 'permission_callback' => [$this, 'validate_nonce'],
-                'callback' => [ $this->callbacks, 'form_post' ],
+                'callback' => [ $this->callbacks, 'application_post' ],
                 'args' => [
                     'ad_id' => [
                         'required' => TRUE,

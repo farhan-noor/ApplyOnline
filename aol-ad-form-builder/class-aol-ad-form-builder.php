@@ -78,8 +78,8 @@ class AOL_Ad_Form_Builder_V2 {
 					'idRequired'    => esc_html__( 'Unique ID is required.', 'apply-online' ),
 					'labelRequired' => esc_html__( 'Label is required.', 'apply-online' ),
 					'optionsHint'   => esc_html__( 'Comma separated (Option 1, Option 2)', 'apply-online' ),
-					'formInput'     => esc_html__( 'Form Input Fields', 'apply-online' ),
-					'formSection'   => esc_html__( 'Form Sections', 'apply-online' ),
+					'formInput'     => esc_html__( 'Input Fields', 'apply-online' ),
+					'formSection'   => esc_html__( 'Sections', 'apply-online' ),
 				),
 			)
 		);

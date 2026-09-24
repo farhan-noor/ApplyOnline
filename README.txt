@@ -112,7 +112,7 @@ Consent or terms & conditions field.
 List view & horizontal view options for Checkbox & Radio button fields.
 
 = 2.7.1 =
-New: Name field in the application form builder and on the public side.
+New: Name form field in the application form builder.
 Fixed: PHP Warnings during application form processing & saving.
 Fixed: Notify Email checkbox restored in application form builder.
 Fixed: Required attribute for radio buttons in the application form.
@@ -124,7 +124,7 @@ New: Application form builder v2 replacing legacy form builder.
 Fixed: Application form fieldset styling.
 Fixed: Application form select field default value to none.
 Fixed: Separator class & styling added in received application table in admin panel & print preview.
-Fixed: Undefined property: Applyonline_Applications::$version on line 801 in admin\class-applyonline-admin.php
+Fixed: PHP Warning Undefined property: Applyonline_Applications::$version on line 801 in admin\class-applyonline-admin.php
 Fixed: Nonce expired generic error message replaced with a more specific error message.
 Fixed: Application form invalid email error formation.
 
@@ -502,6 +502,9 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.7.1 =
+ Major update, maintenance & security releases, upgrade immediately.
+
 = 2.6.9 =
  Major update, maintenance & security releases, upgrade immediately.
 

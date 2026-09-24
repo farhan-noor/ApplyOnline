@@ -458,13 +458,60 @@ function aol_application_data($post){
     return $data;
 }
 
-    function aol_remove_app_prefix( &$value ){
-        if( substr($value, 0, 9 ) == '_aol_app_' ){
-            $value = substr( $value, 9 );
-        }
+function aol_remove_app_prefix( &$value ){
+    if( substr($value, 0, 9 ) == '_aol_app_' ){
+        $value = substr( $value, 9 );
     }
+}
 
 function aol_application_data_v2($post, $keys){
+    $transcript = get_post_meta($post->ID, "ad_transcript", TRUE);
+    foreach($transcript as $key => $val){
+        $transcript[$key] = maybe_unserialize(maybe_unserialize($val));
+    }
+    
+    $keys_order = empty( $transcript['_aol_fields_order'] ) ? array_keys ($transcript) : $transcript['_aol_fields_order'];
+    
+    $data = [];
+    foreach ( $keys_order as $key ):
+        //if ( substr ( $key, 0, 9 ) == '_aol_app_' ){
+
+            $val = get_post_meta( $post->ID, $key, true );
+            
+            //check field type.
+            switch ($transcript[$key]['type']){
+                case 'file':
+                    $val = empty($val) ? NULL: aol_crypt($val['file']);
+                    break;
+
+                case 'checkbox':
+                    $val = empty($val) ? NULL: implode(', ', $val);
+                    break;
+                
+                case 'paragraph':
+                    $val = empty($val) ? $transcript[$key]['text'] : $val;
+                    break;
+                
+                case 'name':
+                    //$middle = empty($val['middle']) ? NULL : ' - '.$val['middle'];
+                    //$val = $val['first'].$middle.' - '.$val['last'];
+                    $val = 'Hello World';
+                    break;
+                
+                default :
+                    $val  = empty($val) ? NULL: $val;
+            }
+            $data[$key] = array(
+                'label' => isset($transcript[$key]['label']) ? $transcript[$key]['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
+                'value' => $val,
+                'type' => $transcript[$key]['type']
+                    );
+        //}
+    endforeach;
+    return $data;
+}
+
+function aol_application_data_v3($post, $keys){
     $transcript = json_decode( get_post_meta($post->ID, "_transcript", TRUE) );
     
     $data = [];
@@ -489,7 +536,7 @@ function aol_application_data_v2($post, $keys){
                     break;
 
                 case 'paragraph':
-                    //$val = empty($val) ? $meta[$key]['text'] : $val;
+                    //$val = empty($val) ? $transcript[$key]['text'] : $val;
                     $val = empty($val) ? $field['text'] : $val;
                     break;
 

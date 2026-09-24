@@ -290,6 +290,10 @@ class Applyonline_Activator {
             update_option('aol_dismissed_notices', $notices);
              * 
              */
+            if( false === get_option('aol_version') ){
+                update_option('aol_version', APPLYONLINE_VERSION, true );
+            }
+            
             if( !get_option('aol_admin_notices') ) update_option( 'aol_admin_notices', ['aol_fresh_install'] );
 
             if(!get_option('aol_progress_bar_color')) update_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));

@@ -109,7 +109,7 @@ class Applyonline_Rest_Functions{
         /**
          * The function processes and saves application form data in the database. 
          */
-        public function form_post( WP_REST_REQUEST $request ){
+        public function application_post( WP_REST_REQUEST $request ){
             $form_data = $request->get_params();
 
             //Get ad id from the form data.
@@ -125,13 +125,8 @@ class Applyonline_Rest_Functions{
 
             //Original form fields of the ad.
             $ad_fields = get_post_meta($ad_id, '', TRUE);
-            /*
-            global $wpdb;
-            $qry = $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."postmeta WHERE post_id=%d", $ad_id);
-             *
-             */
 
-            //If no fields found.
+            //Ad does not exist if no fields found.
             if( empty($ad_fields) ){
                 return new WP_REST_Response( ['message' => "Are you nuts?"], 404 );
             }
